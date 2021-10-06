@@ -1,30 +1,25 @@
 <template>
-  <Signup />
-  <Signin />
-
+	<Header />
+	<router-view></router-view>
 </template>
 
 <script>
-import Signup from './components/Signup.vue'
-import Signin from './components/Signin.vue'
+import Header from "./components/Header.vue";
 
 export default {
-
-  name: 'App',
-  components: {
-    Signup,
-    Signin
-  }
-}
+	name: "App",
+	components: {
+		Header
+	}
+};
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-align: center;
+	color: #2c3e50;
 }
 </style>

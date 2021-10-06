@@ -5,7 +5,7 @@
                 <h4>Create account</h4>
                 <div>
                     <span>Already have an account?</span> 
-                    <a href="#" class="text-decoration-none">Sign In</a> 
+                    <NavLink url='/signin' text="Sign In" /> 
                 </div>
 
                 <div class="mt-3 px-3"> 
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import Button from './Button.vue'
+import Button from '../components/Button.vue'
+import NavLink from '../components/NavLink.vue'
     export default {
         data() {
             return {
@@ -37,7 +38,8 @@ import Button from './Button.vue'
             }
         },
         components: {
-            Button
+            Button,
+            NavLink
         }, 
         methods: {
             //Testing form ... 
