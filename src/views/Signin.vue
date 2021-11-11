@@ -5,7 +5,7 @@
 				<h4>Sign in</h4>
 				<div>
 					<span>Don't have an account?</span>
-					<NavLink url="/signup" text="Sign Up" />
+					<router-link to="/signup">Sign Up</router-link>
 				</div>
 
 				<div class="mt-3 px-3">
@@ -21,31 +21,56 @@
 						aria-label="Password"
 					/>
 				</div>
-				<Button @click="processForm" content="Sign in" />
+				<button class="btn btn-primary btn-block" @click="fetchUserLogin">Sign in</button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import Button from "../components/Button.vue";
-import NavLink from "../components/NavLink.vue";
 export default {
 	data() {
 		return {
-			email: "",
-			password: ""
+			email: this.email,
+			password: this.password
 		};
 	},
-	components: {
-		Button,
-		NavLink
-	},
+	components: {},
 	methods: {
 		//Testing form ...
-		processForm: function() {
-			console.log({ email: this.email, password: this.password });
+		fetchUserLogin: function() {
+			const userLog = {
+				email: "thibaud@gmail.com",
+				password: "Password16?"
+			};
+			fetch("http://localhost:3000/api/auth/login", {
+				method: "POST",
+				headers: {
+					"Content-type": "application/json"
+				},
+				body: JSON.stringify(userLog)
+			})
+				.then(res => {
+					if (res.status == 200) {
+						return res.json();
+					} else {
+						throw "User not found";
+					}
+				})
+				.then(dataToken => {
+					console.log(dataToken);
+					localStorage.setItem("token", JSON.stringify(dataToken.token));
+					localStorage.setItem("userId", JSON.stringify(dataToken.userId))
+					this.$router.push("/");
+				})
+				.catch(err => console.log(err));
 		}
 	}
 };
 </script>
+
+<style scoped>
+button {
+	margin-top: 15px;
+}
+</style>
