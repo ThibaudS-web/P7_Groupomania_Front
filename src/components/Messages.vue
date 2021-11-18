@@ -5,10 +5,7 @@
 </template>
 
 <script>
-const userId = localStorage.getItem("userId");
-console.log(userId);
 import Message from "./Message.vue";
-
 export default {
 	name: "Messages",
 	props: {

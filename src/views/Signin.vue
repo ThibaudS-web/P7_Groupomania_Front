@@ -63,6 +63,7 @@ export default {
 					localStorage.setItem("token", JSON.stringify(dataToken.token));
 					localStorage.setItem("userId", JSON.stringify(dataToken.userId))
 					this.$router.push("/");
+					this.$emit("signin-success")
 				})
 				.catch(err => console.log(err));
 		}

@@ -13,9 +13,7 @@
 import Messages from "../components/Messages.vue";
 import AddMessage from "../components/AddMessage.vue";
 import Button from "../components/Button.vue";
-const userId = localStorage.getItem('userId')
-const token = localStorage.getItem("token");
-const headerAuth = "bearer " + JSON.parse(token);
+import Constants from "../constants.js";
 
 export default {
 	name: "Home",
@@ -29,11 +27,11 @@ export default {
 	data() {
 		return {
 			messages: [],
-			showAddMessage: false,
-			userId: userId
+			showAddMessage: false
 		};
 	},
 	beforeMount: function() {
+		const headerAuth = Constants.getAuthToken();
 		fetch("http://localhost:3000/api/messages", {
 			method: "GET",
 			headers: {
@@ -58,8 +56,8 @@ export default {
 		toggleAddMessage() {
 			this.showAddMessage = !this.showAddMessage;
 		},
-
 		async deleteMessage(id) {
+			const headerAuth = Constants.getAuthToken();
 			if (confirm("Are you sure ?")) {
 				const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
 					method: "DELETE",
@@ -76,12 +74,13 @@ export default {
 		},
 
 		async addMessage(message) {
+			const headerAuth = Constants.getAuthToken();
 			const formData = new FormData();
-			formData.append('userId', this.userId)
+			formData.append("userId", this.userId);
 			formData.append("title", message.title);
 			formData.append("content", message.content);
 			formData.append("image", message.attachment);
-			console.log(formData)
+			console.log(formData);
 			const res = await fetch("http://localhost:3000/api/messages", {
 				method: "POST",
 				headers: {
@@ -93,11 +92,10 @@ export default {
 				const result = await res.json();
 				this.messages.push(result);
 				console.log("FRONT OBJECT :", result);
-				this.toggleAddMessage()
+				this.toggleAddMessage();
 			} else {
 				alert("Message cannot be sent!");
 			}
-			
 		}
 	}
 };

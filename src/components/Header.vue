@@ -11,12 +11,17 @@
 						/>
 						<div class="nav-connexion">
 							<li class="links">
-								<router-link v-show="!showLink" to="/signin">Sign in</router-link>
-								<router-link v-show="showLink" to="/profil">My profil</router-link>
+								<router-link :to="url">{{ textLink }}</router-link>
 							</li>
 							<li class="links">
 								<router-link v-show="!showLink" to="/signup">Sign Up</router-link>
-								<button class="btn btn-secondary btn-sm" v-show="showLink" @click="logout">Log Out</button>
+								<button
+									class="btn btn-secondary btn-sm"
+									v-show="showLink"
+									@click="logout"
+								>
+									Log Out
+								</button>
 							</li>
 						</div>
 					</nav>
@@ -29,27 +34,36 @@
 <script>
 export default {
 	name: "Header",
-	data: () => {
+	props: {
+		connected: Boolean
+	},
+	data() {
 		return {
-			showLink: ""
+			showLink: "",
+			url: "/signin",
+			textLink: "Sign in"
 		};
 	},
 	methods: {
 		logout() {
 			localStorage.removeItem("token");
-			localStorage.removeItem("userId")
+			localStorage.removeItem("userId");
 			this.$router.push("/signin");
+			this.showLink = false;
+			this.url = "/signin";
+			this.textLink = "Sign in";
+			this.$emit('log-out')
 		}
 	},
-	beforeMount: function() {
-		console.log('beforeMount')
-		const token = localStorage.getItem("token");
-		if (token) {
-			console.log('Show profil');
-			return this.showLink = true;
+	beforeUpdate: function() {
+		if (this.connected) {
+			console.log("connected");
+			this.showLink = true;
+			this.url = "/profil";
+			this.textLink = "My profil";
 		} else {
-			console.log("show sign in");
-			return this.showLink = false;
+			console.log("not connected");
+			this.showLink = false;
 		}
 	}
 };

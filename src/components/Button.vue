@@ -1,5 +1,5 @@
 <template>
-	<button :style="{ background: color }" class="btn mt-3 mb-4">{{ text }}</button>
+	<button :style="{ background: color }" class="btn mb-4">{{ text }}</button>
 </template>
 
 <script>
