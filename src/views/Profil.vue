@@ -156,7 +156,7 @@ export default {
 			.catch(err => console.log(err));
 	},
 	beforeUpdate: function() {
-		if (this.profilData.bio !== "") {
+		if (this.profilData.bio) {
 			this.text = "Modifier votre bio";
 		} else {
 			this.text = "Ajouter votre bio";
