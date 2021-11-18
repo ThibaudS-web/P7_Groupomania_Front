@@ -21,7 +21,7 @@
 						aria-label="Password"
 					/>
 				</div>
-				<button class="btn btn-primary btn-block" @click="fetchUserLogin">Sign in</button>
+				<button class="btn btn-primary btn-block mt-3" @click="fetchUserLogin">Sign in</button>
 			</div>
 		</div>
 	</div>
@@ -43,6 +43,7 @@ export default {
 				email: "thibaud@gmail.com",
 				password: "Password16?"
 			};
+			console.log(userLog)
 			fetch("http://localhost:3000/api/auth/login", {
 				method: "POST",
 				headers: {
@@ -68,9 +69,3 @@ export default {
 	}
 };
 </script>
-
-<style scoped>
-button {
-	margin-top: 15px;
-}
-</style>

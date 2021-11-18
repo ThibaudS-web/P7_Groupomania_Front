@@ -1,7 +1,7 @@
 <template>
 	<h1>Hello Users! :)</h1>
 	<Button
-		@toggle-add-message="toggleAddMessage"
+		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
 		:color="showAddMessage ? 'red' : 'blue'"
 	/>
@@ -93,9 +93,11 @@ export default {
 				const result = await res.json();
 				this.messages.push(result);
 				console.log("FRONT OBJECT :", result);
+				this.toggleAddMessage()
 			} else {
 				alert("Message cannot be sent!");
 			}
+			
 		}
 	}
 };

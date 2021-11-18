@@ -1,5 +1,5 @@
 <template>
-	<button @click="toggleAddMessage" :style="{ background: color }" class="btn">{{ text }}</button>
+	<button :style="{ background: color }" class="btn mt-3 mb-4">{{ text }}</button>
 </template>
 
 <script>
@@ -8,18 +8,12 @@ export default {
 	props: {
 		text: String,
 		color: String
-	},
-	methods: {
-		toggleAddMessage() {
-			this.$emit("toggle-add-message");
-		}
 	}
 };
 </script>
 
 <style scoped>
 button {
-	margin-bottom: 20px;
 	color: white;
 }
 button:hover {

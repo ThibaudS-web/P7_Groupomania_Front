@@ -1,8 +1,5 @@
 <template>
-	<div
-		@click="deleteImg"
-		class="container col-xxl-5 col-xl-6 col-lg-7 col-md-8 bg-light bg-gradient mb-5 p-4"
-	>
+	<div class="container col-xxl-5 col-xl-6 col-lg-7 col-md-8 bg-light bg-gradient mb-5 p-4">
 		<div class="d-flex justify-content-between">
 			<h2 class="h4">Username</h2>
 			<i
@@ -44,7 +41,7 @@ export default {
 	}
 };
 </script>
-	
+
 <style scoped>
 .container {
 	border-radius: 15px;

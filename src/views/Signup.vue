@@ -51,7 +51,7 @@ export default {
 		//Create a new user
 		fetchCreateUser: function() {
 			const newUser = {
-				username: "Random_user",
+				username: "Thibaud",
 				email: "thibaud@gmail.com",
 				password: "Password16?"
 			};

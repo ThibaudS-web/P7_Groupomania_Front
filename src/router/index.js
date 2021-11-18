@@ -28,13 +28,12 @@ const routes = [
         name: "Profil",
         component: Profil,
         meta: { requiresAuth: true }
-      }
+    }
 ]
-
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
-    linkExactActiveClass: "link-active-class"
+    linkExactActiveClass: "link-active-class",
 })
 
 router.beforeEach((to, from, next) => {
