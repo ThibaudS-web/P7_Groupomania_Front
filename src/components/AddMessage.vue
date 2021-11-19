@@ -37,12 +37,12 @@
 				name="attachment"
 			/>
 		</div>
-
 		<input
+			id='btn-submit-message'
 			@click="onSubmit"
 			type="submit"
 			value="Envoyez votre message"
-			class="btn btn-dark btn-block"
+			class="btn btn-block"
 		/>
 	</form>
 </template>
@@ -91,6 +91,10 @@ export default {
 </script>
 
 <style scoped>
+#btn-submit-message {
+	background-color: #424242;
+	color: white;
+}
 form {
 	background-color: #f8f9fa;
 	padding: 20px;

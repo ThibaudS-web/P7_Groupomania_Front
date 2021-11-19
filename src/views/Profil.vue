@@ -1,29 +1,38 @@
 <template>
 	<h1 @click="diplayTextButton" class="mb-5">Bienvenue {{ profilData.username }}</h1>
-	<div class="container-md justify-content-around flex-wrap d-flex">
-		<div class="d-flex flex-column">
-			<img :src="profilData.picture" alt="image utilisateur" />
+	<div class="container-md  justify-content-around flex-wrap d-flex">
+		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
+			<img id="image-user" :src="profilData.picture" alt="image utilisateur" />
 			<div class="input-group mb-3">
-				<input type="file" @change="uploadPicture" class="form-control mt-3" id="pictureInput" />
+				<input
+					type="file"
+					@change="uploadPicture"
+					class="form-control mt-3"
+					id="pictureInput"
+				/>
 			</div>
-			<button @click="modifyPicture" class="btn btn-dark btn-block">Mettre à jour photo</button>
+			<button @click="modifyPicture" id="btn-update-photo" class="btn btn-block">
+				Mettre à jour photo
+			</button>
 			<button
+				id="btn-delete-photo"
 				v-show="displayBtn"
 				@click="deletePicture"
 				class="btn btn-danger btn-block my-3"
-			>Supprimer photo</button>
+			>
+				Supprimer photo
+			</button>
 		</div>
 		<div class="d-flex col-lg-5 flex-column">
-			<div
-				v-if="profilData.bio"
-				class="border my-3 rounded p-3 border-2 border-dark"
-			>{{ profilData.bio }}</div>
+			<div v-if="profilData.bio" class="border my-3 rounded p-3 border-2 border-dark">
+				{{ profilData.bio }}
+			</div>
 			<Button
 				class="col-lg-5 align-self-center"
 				v-if="!showAddBio"
 				@click="toggleAddBio"
 				:text="text"
-				color="#212529"
+				color="#424242"
 			/>
 			<textarea
 				v-if="showAddBio"
@@ -37,10 +46,13 @@
 			></textarea>
 
 			<button
+				id="btn-update-bio"
 				v-if="showAddBio"
 				@click="modifyBio"
-				class="btn btn-dark btn-block my-3 col-lg-5 align-self-center"
-			>Mettre à jour biographie</button>
+				class="btn btn-block my-3 col-lg-5 align-self-center"
+			>
+				Mettre à jour biographie
+			</button>
 		</div>
 	</div>
 </template>
@@ -48,6 +60,7 @@
 <script>
 import picture from "../assets/user_picture_default.png";
 import Button from "../components/Button.vue";
+import AuthManager from "../authManager";
 export default {
 	name: "Profil",
 	components: {
@@ -68,12 +81,13 @@ export default {
 		toggleAddBio() {
 			this.showAddBio = !this.showAddBio;
 		},
+
 		uploadPicture(event) {
 			this.targetFile = event.target.files[0];
 		},
+
 		async modifyPicture() {
-			const token = localStorage.getItem("token");
-			const headerAuth = "bearer " + JSON.parse(token);
+			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();
 			formData.append("image", this.targetFile);
 			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/picture", {
@@ -91,9 +105,9 @@ export default {
 				alert("Image can't be modified");
 			}
 		},
+
 		async deletePicture() {
-			const token = localStorage.getItem("token");
-			const headerAuth = "bearer " + JSON.parse(token);
+			const headerAuth = AuthManager.getAuthToken();
 			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/picture", {
 				method: "DELETE",
 				headers: {
@@ -108,9 +122,9 @@ export default {
 				alert("Image can't be deleted");
 			}
 		},
+
 		async modifyBio() {
-			const token = localStorage.getItem("token");
-			const headerAuth = "bearer " + JSON.parse(token);
+			const headerAuth = AuthManager.getAuthToken();
 			const newBio = this.bio;
 			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/bio", {
 				method: "PUT",
@@ -128,10 +142,10 @@ export default {
 			}
 		}
 	},
-	beforeMount: function () {
-		const token = localStorage.getItem("token");
-		const headerAuth = "bearer " + JSON.parse(token);
-		const userId = localStorage.getItem("userId");
+
+	beforeMount: function() {
+		const headerAuth = AuthManager.getAuthToken();
+		const userId = AuthManager.getUserId();
 		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
 			method: "GET",
 			headers: {
@@ -158,7 +172,7 @@ export default {
 			})
 			.catch(err => console.log(err));
 	},
-	beforeUpdate: function () {
+	beforeUpdate: function() {
 		if (this.profilData !== null) {
 			if (this.profilData.bio) {
 				this.text = "Modifier votre bio";
@@ -171,9 +185,32 @@ export default {
 </script>
 
 <style scoped>
+button:hover, input:hover {
+	box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
+
+}
+#container-profil-photo {
+	background-color: #f8f9fa;
+	border-radius: 20px;
+	box-shadow: 0px 5px 5px 3px rgba(66, 66, 66, 0.3);
+}
+#btn-delete-photo {
+	background-color: #c62828;
+	color: white;
+}
+#btn-update-photo,
+#btn-update-bio {
+	background-color: #424242;
+	color: white;
+}
+#image-user {
+	border-radius: 20px;
+	height: auto;
+	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3);
+}
 img {
 	object-fit: contain;
-	width: 300px;
-	height: 300px;
+	width: 250px;
+	height: 250px;
 }
 </style>

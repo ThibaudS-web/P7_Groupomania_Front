@@ -5,7 +5,7 @@
 
 <script>
 import Header from "./components/Header.vue";
-import Constants from "./constants";
+import AuthManager from "./authManager";
 export default {
 	name: "App",
 	data: () => {
@@ -27,7 +27,7 @@ export default {
 	},
 	mounted: function() {
 		console.log("beforeMount-App : Hello");
-		if (Constants.isTokenAvailable()) {
+		if (AuthManager.isTokenAvailable()) {
 			this.connected = true;
 			console.log("connected :", this.connected);
 		} else {
@@ -47,6 +47,3 @@ export default {
 	color: #2c3e50;
 }
 </style>
-
-1 : Changer l'état quand l'event est reçu (App.vue) 2 : Faire passer l'état au frere (App.vue) 3 :
-Gérer l'état dans le frère (Header.vue) 4 : Gérer l'état de départ (App.vue) 2 > 3 > 1 > 4

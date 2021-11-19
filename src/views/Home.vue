@@ -3,7 +3,7 @@
 	<Button
 		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
-		:color="showAddMessage ? 'red' : 'blue'"
+		:color="showAddMessage ? '#c62828' : '#1565c0'"
 	/>
 	<AddMessage v-show="showAddMessage" @add-message="addMessage" />
 	<Messages @delete-message="deleteMessage" :messages="messages" />
@@ -13,7 +13,7 @@
 import Messages from "../components/Messages.vue";
 import AddMessage from "../components/AddMessage.vue";
 import Button from "../components/Button.vue";
-import Constants from "../constants.js";
+import AuthManager from "../authManager.js";
 
 export default {
 	name: "Home",
@@ -31,7 +31,7 @@ export default {
 		};
 	},
 	beforeMount: function() {
-		const headerAuth = Constants.getAuthToken();
+		const headerAuth = AuthManager.getAuthToken();
 		fetch("http://localhost:3000/api/messages", {
 			method: "GET",
 			headers: {
@@ -47,8 +47,8 @@ export default {
 				}
 			})
 			.then(dataMessages => {
-				console.log(dataMessages.messages);
 				this.messages = dataMessages.messages;
+				console.log("FETCH MESSAGE: ", this.messages[0].User);
 			})
 			.catch(err => console.log(err));
 	},
@@ -57,7 +57,7 @@ export default {
 			this.showAddMessage = !this.showAddMessage;
 		},
 		async deleteMessage(id) {
-			const headerAuth = Constants.getAuthToken();
+			const headerAuth = AuthManager.getAuthToken();
 			if (confirm("Are you sure ?")) {
 				const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
 					method: "DELETE",
@@ -74,7 +74,7 @@ export default {
 		},
 
 		async addMessage(message) {
-			const headerAuth = Constants.getAuthToken();
+			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();
 			formData.append("userId", this.userId);
 			formData.append("title", message.title);

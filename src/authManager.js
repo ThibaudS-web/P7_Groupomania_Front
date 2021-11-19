@@ -1,9 +1,12 @@
 export default {
+    getUserId: function () {
+        const userId = localStorage.getItem('userId')
+        return userId
+    },
     getAuthToken: function () {
-        let token = localStorage.getItem("token")
+        const token = localStorage.getItem("token")
         return "Bearer " + JSON.parse(token)
     },
-
     isTokenAvailable: function () {
         return localStorage.getItem("token") !== null
     }
