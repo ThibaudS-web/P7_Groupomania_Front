@@ -1,5 +1,5 @@
 <template>
-	<h1>Hello Users! :)</h1>
+	<h1 class="mb-4">Bienvenue au réseau social de Groupomania</h1>
 	<Button
 		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
@@ -48,7 +48,7 @@ export default {
 			})
 			.then(dataMessages => {
 				this.messages = dataMessages.messages;
-				console.log("FETCH MESSAGE: ", this.messages[0].User);
+				console.log("GET MESSAGES: ", this.messages);
 			})
 			.catch(err => console.log(err));
 	},
@@ -76,7 +76,6 @@ export default {
 		async addMessage(message) {
 			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();
-			formData.append("userId", this.userId);
 			formData.append("title", message.title);
 			formData.append("content", message.content);
 			formData.append("image", message.attachment);
@@ -91,7 +90,7 @@ export default {
 			if (res.status === 201) {
 				const result = await res.json();
 				this.messages.push(result);
-				console.log("FRONT OBJECT :", result);
+				console.log("POST MESSAGE :", result);
 				this.toggleAddMessage();
 			} else {
 				alert("Message cannot be sent!");

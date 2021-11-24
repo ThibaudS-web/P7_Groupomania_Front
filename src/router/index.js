@@ -24,7 +24,7 @@ const routes = [
         }
     },
     {
-        path: "/profil",
+        path: "/profil/:id",
         name: "Profil",
         component: Profil,
         meta: { requiresAuth: true }
@@ -36,10 +36,11 @@ const router = createRouter({
     linkExactActiveClass: "link-active-class",
 })
 
+
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token')
     console.log(token)
-    if (to.matched.some(record  => record.meta.requiresAuth)) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!token) {
             console.log(!token)
             next({

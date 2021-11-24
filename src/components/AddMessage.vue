@@ -100,5 +100,6 @@ form {
 	padding: 20px;
 	border-radius: 20px;
 	margin-bottom: 20px;
+	box-shadow: 0px 5px 5px 3px rgba(66, 66, 66, 0.1);
 }
 </style>

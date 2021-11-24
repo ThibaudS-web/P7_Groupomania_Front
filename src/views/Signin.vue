@@ -2,10 +2,10 @@
 	<div class="body-background">
 		<div class="container-fluid d-flex justify-content-center align-items-center h-100">
 			<div class="card p-3 text-center py-4">
-				<h4>Sign in</h4>
+				<h4>Connexion à Groupomania</h4>
 				<div>
-					<span>Don't have an account?</span>
-					<router-link to="/signup">Sign Up</router-link>
+					<span>Tu n'as pas de compte ? </span>
+					<router-link to="/signup">S'enregistrer</router-link>
 				</div>
 
 				<div class="mt-3 px-3">
@@ -21,7 +21,7 @@
 						aria-label="Password"
 					/>
 				</div>
-				<button class="btn btn-primary btn-block mt-3" @click="fetchUserLogin">Sign in</button>
+				<button class="btn btn-primary btn-block mt-3" @click="fetchUserLogin">Se connecter</button>
 			</div>
 		</div>
 	</div>

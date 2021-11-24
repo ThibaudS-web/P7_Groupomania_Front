@@ -1,20 +1,29 @@
 <template>
-	<h1 @click="diplayTextButton" class="mb-5">Bienvenue {{ profilData.username }}</h1>
+	<h1 class="mb-5">
+		Bienvenue <span v-if="profilData.id != userIdLocal">chez</span> {{ profilData.username }}
+	</h1>
 	<div class="container-md  justify-content-around flex-wrap d-flex">
 		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
 			<img id="image-user" :src="profilData.picture" alt="image utilisateur" />
 			<div class="input-group mb-3">
 				<input
+					v-if="profilData.id == userIdLocal"
 					type="file"
 					@change="uploadPicture"
 					class="form-control mt-3"
 					id="pictureInput"
 				/>
 			</div>
-			<button @click="modifyPicture" id="btn-update-photo" class="btn btn-block">
+			<button
+				v-if="profilData.id == userIdLocal"
+				@click="modifyPicture"
+				id="btn-update-photo"
+				class="btn btn-block"
+			>
 				Mettre à jour photo
 			</button>
 			<button
+				v-if="profilData.id == userIdLocal"
 				id="btn-delete-photo"
 				v-show="displayBtn"
 				@click="deletePicture"
@@ -29,7 +38,7 @@
 			</div>
 			<Button
 				class="col-lg-5 align-self-center"
-				v-if="!showAddBio"
+				v-if="!showAddBio && profilData.id == userIdLocal"
 				@click="toggleAddBio"
 				:text="text"
 				color="#424242"
@@ -61,6 +70,7 @@
 import picture from "../assets/user_picture_default.png";
 import Button from "../components/Button.vue";
 import AuthManager from "../authManager";
+
 export default {
 	name: "Profil",
 	components: {
@@ -71,10 +81,11 @@ export default {
 			text: "",
 			showAddBio: "",
 			defaultPicture: picture,
-			profilData: null,
+			profilData: "",
 			targetFile: "",
 			displayBtn: "",
-			bio: ""
+			bio: "",
+			userIdLocal: AuthManager.getUserId()
 		};
 	},
 	methods: {
@@ -142,10 +153,11 @@ export default {
 			}
 		}
 	},
-
 	beforeMount: function() {
 		const headerAuth = AuthManager.getAuthToken();
-		const userId = AuthManager.getUserId();
+		const url = document.location.href;
+		const getUserId = url.split("/profil/");
+		const userId = getUserId[1];
 		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
 			method: "GET",
 			headers: {
@@ -154,7 +166,7 @@ export default {
 			}
 		})
 			.then(res => {
-				if (res.status == 200) {
+				if (res.status === 200) {
 					return res.json();
 				} else {
 					throw "Profil Not Found";
@@ -185,9 +197,9 @@ export default {
 </script>
 
 <style scoped>
-button:hover, input:hover {
-	box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.3);
-
+button:hover,
+input:hover {
+	box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.3);
 }
 #container-profil-photo {
 	background-color: #f8f9fa;
@@ -206,7 +218,7 @@ button:hover, input:hover {
 #image-user {
 	border-radius: 20px;
 	height: auto;
-	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.3);
 }
 img {
 	object-fit: contain;

@@ -2,10 +2,10 @@
 	<div class="body-background">
 		<div class="container-fluid d-flex justify-content-center align-items-center h-100">
 			<div class="card p-3 text-center py-4">
-				<h4>Create account</h4>
+				<h4>Créer un compte</h4>
 				<div>
-					<span>Already have an account?</span>
-					<router-link to="/signin">Sign In</router-link>
+					<span>Tu as déjà un compte ? </span>
+					<router-link to="/signin">Se connecter</router-link>
 				</div>
 
 				<div class="mt-3 px-3">
@@ -29,7 +29,7 @@
 				<div class="mt-3 px-3">
 					<input v-model="email" class="form-control" placeholder="E-mail" />
 				</div>
-				<button class="btn btn-primary btn-block" @click="fetchUserLogin">Sign up</button>
+				<button class="btn btn-primary btn-block" @click="fetchUserLogin">Créer le compte</button>
 			</div>
 		</div>
 	</div>

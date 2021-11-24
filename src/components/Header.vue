@@ -4,23 +4,25 @@
 			<div class="container mb-5">
 				<div class="row">
 					<nav class="navbar navbar-expand-lg navbar-dark">
-						<img
-							src="../logos/icon-left-font-monochrome-black.svg"
-							width="200"
-							height="200"
-						/>
+						<a href="/"
+							><img
+								src="../logos/icon-left-font-monochrome-black.svg"
+								width="200"
+								height="200"
+							/>
+						</a>
 						<div class="nav-connexion">
 							<li class="links">
 								<router-link :to="url">{{ textLink }}</router-link>
 							</li>
 							<li class="links">
-								<router-link v-show="!showLink" to="/signup">Sign Up</router-link>
+								<router-link v-show="!showLink" to="/signup">S'enregistrer</router-link>
 								<button
 									class="btn btn-secondary btn-sm"
 									v-show="showLink"
 									@click="logout"
 								>
-									Log Out
+									Se déconnecter
 								</button>
 							</li>
 						</div>
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+import authManager from "../authManager";
 export default {
 	name: "Header",
 	props: {
@@ -51,16 +54,16 @@ export default {
 			this.$router.push("/signin");
 			this.showLink = false;
 			this.url = "/signin";
-			this.textLink = "Sign in";
-			this.$emit('log-out')
+			this.textLink = "Se connecter";
+			this.$emit("log-out");
 		}
 	},
 	beforeUpdate: function() {
 		if (this.connected) {
 			console.log("connected");
 			this.showLink = true;
-			this.url = "/profil";
-			this.textLink = "My profil";
+			this.url = `/profil/${authManager.getUserId()}`;
+			this.textLink = "Mon profil";
 		} else {
 			console.log("not connected");
 			this.showLink = false;

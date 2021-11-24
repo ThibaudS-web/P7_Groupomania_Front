@@ -1,6 +1,6 @@
 <template>
 	<Header @log-out="logOut" :connected="connected" />
-	<router-view @signin-success="onSigninSuccess"></router-view>
+	<router-view :key="$route.fullPath" @signin-success="onSigninSuccess"></router-view>
 </template>
 
 <script>

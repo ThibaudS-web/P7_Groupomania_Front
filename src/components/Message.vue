@@ -4,15 +4,17 @@
 	>
 		<div id="header-message" class="d-flex">
 			<div class="container-image-profil">
-				<img
-					id="picture-profil"
-					:src="this.dataMessage.User.picture"
-					class="align-self-center"
-					alt="Photo de l'auteur du message"
-				/>
+				<a :href="profilUrl">
+					<img
+						id="picture-profil"
+						:src="dataMessage.User.picture"
+						class="align-self-center"
+						alt="Photo de l'auteur du message"
+					/>
+				</a>
 			</div>
 			<h2 id="username-text" class="h6 align-self-center">
-				Crée par {{ this.dataMessage.User.username }}
+				Crée par {{ dataMessage.User.username }}
 			</h2>
 			<i
 				v-if="dataUserId == dataMessage.userId"
@@ -25,7 +27,7 @@
 		<div v-if="hasImage" class="container-image-message">
 			<img
 				id="picture-message"
-				:src="[dataMessage.attachment]"
+				:src="dataMessage.attachment"
 				class="img-fluid image"
 				alt="..."
 			/>
@@ -35,12 +37,15 @@
 
 <script>
 import AuthManager from "../authManager";
+import picture from "../assets/user_picture_default.png";
 export default {
 	name: "Message",
 	data() {
 		return {
 			dataUserId: AuthManager.getUserId(),
-			dataMessage: this.message
+			dataMessage: this.message,
+			defaultPicture: picture,
+			profilUrl: ``
 		};
 	},
 	props: {
@@ -55,6 +60,14 @@ export default {
 		hasImage() {
 			return this.dataMessage.attachment !== null;
 		}
+	},
+	beforeMount: function() {
+		this.profilUrl = `profil/${this.dataMessage.userId}`;
+	},
+	mounted: function() {
+		if (this.dataMessage.User.picture === null) {
+			this.dataMessage.User.picture = this.defaultPicture
+		}
 	}
 };
 </script>
@@ -62,7 +75,7 @@ export default {
 <style scoped>
 .container {
 	border-radius: 15px;
-	box-shadow: 0px 5px 5px 3px rgba(66, 66, 66, 0.30);
+	box-shadow: 0px 5px 5px 3px rgba(66, 66, 66, 0.3);
 }
 #header-message {
 	border-bottom: #978686 solid 1px;
