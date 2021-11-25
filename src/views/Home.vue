@@ -6,7 +6,10 @@
 		:color="showAddMessage ? '#c62828' : '#1565c0'"
 	/>
 	<AddMessage v-show="showAddMessage" @add-message="addMessage" />
-	<Messages @delete-message="deleteMessage" :messages="messages" />
+	<Messages
+		@delete-message="deleteMessage"
+		:messages="messages"
+	/>
 </template>
 
 <script>
@@ -72,7 +75,6 @@ export default {
 			}
 			console.log(id);
 		},
-
 		async addMessage(message) {
 			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();

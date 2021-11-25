@@ -44,7 +44,7 @@ export default {
 		return {
 			showLink: "",
 			url: "/signin",
-			textLink: "Sign in"
+			textLink: "Se connecter"
 		};
 	},
 	methods: {

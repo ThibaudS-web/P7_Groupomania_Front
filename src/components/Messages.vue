@@ -1,6 +1,9 @@
 <template>
 	<div :key="message" v-for="message in messages">
-		<Message @delete-message="deleteMessage" :message="message"  />
+		<Message
+			@delete-message="deleteMessage"
+			:message="message"
+		/>
 	</div>
 </template>
 
