@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import authManager from "../authManager";
+import authManager from "../AuthManager";
 export default {
 	name: "Header",
 	props: {

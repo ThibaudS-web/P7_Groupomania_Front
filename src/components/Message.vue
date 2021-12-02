@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<h3 class="h2 mt-3">{{ dataMessage.title }}</h3>
-		<p id="content-message" v-if="!showUpdateContent">{{ dataMessage.content }}</p>
+		<p v-if="!showUpdateContent">{{ dataMessage.content }}</p>
 		<div class="d-flex">
 			<input
 				v-if="showUpdateContent"
@@ -49,7 +49,14 @@
 				type="button"
 			></i>
 		</div>
-		<div v-if="showUpdateContent" @click="toggleModifyContent" id='cancel' class="mb-3 align-content-start">Cliquer pour <span>Annuler</span></div>
+		<div
+			v-if="showUpdateContent"
+			@click="toggleModifyContent"
+			id="cancel"
+			class="mb-3 align-content-start"
+		>
+			Cliquer pour <span>Annuler</span>
+		</div>
 		<div v-if="hasImage" class="container-image-message">
 			<img
 				id="picture-message"
@@ -58,37 +65,124 @@
 				alt="Une image dans le message"
 			/>
 		</div>
+		<div id="footer-message" class="mt-3 d-flex">
+			<i
+				type="button"
+				@click="toggleComment"
+				id="btn-comment"
+				class="far fa-comment-alt mt-3"
+			>
+				Commenter</i
+			>
+		</div>
+		<div id="add-comment" v-if="showComment" class="mt-3 d-flex">
+			<div class="container-image-profil">
+				<a :href="profilUrl">
+					<img
+						id="picture-profil"
+						:src="ProfilPicture"
+						class="align-self-center"
+						alt="Photo de l'auteur du commentaire"
+					/>
+				</a>
+			</div>
+			<input
+				v-model="contentComment"
+				class="rounded-pill m-3 px-3"
+				placeholder="Écrivez un commentaire..."
+			/>
+			<i @click="addComment" type="button" class="fas fa-share align-self-center"></i>
+		</div>
+		<Comments
+			v-if="showComment"
+			:comments="comments"
+			:profilUrl="profilUrl"
+			@delete-comment="deleteComment"
+			@update-comment="updateComment"
+		/>
 	</div>
 </template>
 
 <script>
-import AuthManager from "../authManager";
+import AuthManager from "../AuthManager";
 import picture from "../assets/user_picture_default.png";
+import Comments from "./Comments.vue";
 export default {
 	name: "Message",
 	data() {
 		return {
 			dataUserId: AuthManager.getUserId(),
 			dataMessage: this.message,
+			ProfilPicture: "",
 			defaultPicture: picture,
 			profilUrl: ``,
-			showUpdateContent: ""
+			showUpdateContent: "",
+			showComment: "",
+			comments: this.message.Comments,
+			contentComment: ""
 		};
 	},
 	props: {
 		message: Object
 	},
+	components: {
+		Comments
+	},
 	methods: {
+		async addComment() {
+			const comment = {
+				content: this.contentComment,
+				userId: AuthManager.getUserId(),
+				messageId: this.dataMessage.id,
+			};
+			console.log('comment: ', comment)
+			const headerAuth = AuthManager.getAuthToken();
+			const res = await fetch("http://localhost:3000/api/comments", {
+				method: "POST",
+				headers: {
+					"Content-type": "application/json",	
+					Authorization: headerAuth
+				},
+				body:  JSON.stringify(comment)
+			});
+			if (res.status === 201) {
+				const result = await res.json();
+				this.dataMessage.Comments.push(result);
+			} else {
+				alert("Comment cannot be sent!");
+			}
+		},
+		async deleteComment(id) {
+			const headerAuth = AuthManager.getAuthToken();
+			const res = await fetch(`http://localhost:3000/api/comments/${id}`, {
+				method: "DELETE",
+				headers: {
+					"Content-type": "application/json",
+					Authorization: headerAuth
+				}
+			});
+			if (res.status === 200) {
+				let findCommentIndex = this.dataMessage.Comments.findIndex(
+					comment => comment.id == id
+				);
+				this.dataMessage.Comments.splice(findCommentIndex, 1)
+			} else {
+				console.log("Error deleting");
+			}
+		},
 		deleteMessage(id) {
 			this.$emit("delete-message", id);
 		},
 		toggleModifyContent() {
 			this.showUpdateContent = !this.showUpdateContent;
 		},
+		toggleComment() {
+			this.showComment = !this.showComment;
+		},
 		async updateMessage(id) {
 			const headerAuth = AuthManager.getAuthToken();
-			const contentMessage = document.getElementById("content-message-input");	
-			const newContent = contentMessage.value
+			const contentMessage = document.getElementById("content-message-input");
+			const newContent = contentMessage.value;
 			const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
 				method: "PUT",
 				headers: {
@@ -112,6 +206,27 @@ export default {
 	},
 	beforeMount: function() {
 		this.profilUrl = `profil/${this.dataMessage.userId}`;
+		const headerAuth = AuthManager.getAuthToken();
+		const userId = AuthManager.getUserId();
+		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
+			method: "GET",
+			headers: {
+				"Content-type": "application/json",
+				Authorization: headerAuth
+			}
+		})
+			.then(res => {
+				if (res.status === 200) {
+					return res.json();
+				} else {
+					throw "Profil Not Found";
+				}
+			})
+			.then(data => {
+				this.ProfilPicture = data.profil.picture;
+			})
+			.catch(err => console.log(err));
+		console.log("getData: ", this.comments);
 	},
 	mounted: function() {
 		if (this.dataMessage.User.picture === null) {
@@ -138,8 +253,7 @@ export default {
 	color: #424242;
 }
 #cancel > span {
-	color:rgb(21, 101, 192);
-
+	color: rgb(21, 101, 192);
 }
 #cancel > span:hover {
 	text-decoration: underline;
@@ -174,9 +288,35 @@ img {
 	width: 100%;
 	object-fit: contain;
 }
-#username-text, #cancel {
+#username-text,
+#cancel {
 	color: #637883;
 	margin-left: 6px;
 	margin-right: 5px;
+}
+#footer-message {
+	border-top: 1px #978686 solid;
+}
+#btn-comment:hover {
+	font-weight: bold;
+}
+#add-comment {
+	border-top: 1px #978686 solid;
+}
+#add-comment > input {
+	border: none;
+	border-color: #978686;
+	background-color: #e4e6eb;
+	width: 80%;
+}
+#area-comment {
+	height: auto;
+	max-width: 80%;
+	padding: 10px 12px 10px 12px;
+	background-color: #e4e6eb;
+}
+#area-comment > span {
+	color: black;
+	font-weight: bold;
 }
 </style>

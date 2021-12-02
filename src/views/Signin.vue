@@ -41,7 +41,7 @@ export default {
 		fetchUserLogin: function() {
 			const userLog = {
 				email: "thibaud@gmail.com",
-				password: "Password16?"
+				password: "Azerty16?"
 			};
 			console.log(userLog)
 			fetch("http://localhost:3000/api/auth/login", {

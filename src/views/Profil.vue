@@ -69,7 +69,7 @@
 <script>
 import picture from "../assets/user_picture_default.png";
 import Button from "../components/Button.vue";
-import AuthManager from "../authManager";
+import AuthManager from "../AuthManager";
 
 export default {
 	name: "Profil",

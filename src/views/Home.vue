@@ -16,7 +16,7 @@
 import Messages from "../components/Messages.vue";
 import AddMessage from "../components/AddMessage.vue";
 import Button from "../components/Button.vue";
-import AuthManager from "../authManager.js";
+import AuthManager from "../AuthManager.js";
 
 export default {
 	name: "Home",
@@ -25,7 +25,6 @@ export default {
 		Messages,
 		AddMessage,
 		Button
-		// PROPS POUR COMMUNIQUER D UN ELEMENT PARENT A ENFANT
 	},
 	data() {
 		return {
@@ -81,7 +80,6 @@ export default {
 			formData.append("title", message.title);
 			formData.append("content", message.content);
 			formData.append("image", message.attachment);
-			console.log(formData);
 			const res = await fetch("http://localhost:3000/api/messages", {
 				method: "POST",
 				headers: {
