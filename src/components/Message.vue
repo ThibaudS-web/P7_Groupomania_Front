@@ -4,7 +4,7 @@
 	>
 		<div id="header-message" class="d-flex">
 			<div class="container-image-profil">
-				<a :href="profilUrl">
+				<a :href="authorMessageUrl">
 					<img
 						id="picture-profil"
 						:src="dataMessage.User.picture"
@@ -18,7 +18,7 @@
 			</h2>
 			<div class="d-flex ms-auto p-2 flex-column justify-content-between">
 				<i
-					v-if="dataUserId == dataMessage.userId"
+					v-if="dataUserId == dataMessage.userId || admin"
 					@click="deleteMessage(dataMessage.id)"
 					class="fas  fa-times"
 					type="button"
@@ -93,13 +93,7 @@
 			/>
 			<i @click="addComment" type="button" class="fas fa-share align-self-center"></i>
 		</div>
-		<Comments
-			v-if="showComment"
-			:comments="comments"
-			:profilUrl="profilUrl"
-			@delete-comment="deleteComment"
-			@update-comment="updateComment"
-		/>
+		<Comments v-if="showComment" :comments="comments" @delete-comment="deleteComment" />
 	</div>
 </template>
 
@@ -115,6 +109,7 @@ export default {
 			dataMessage: this.message,
 			ProfilPicture: "",
 			defaultPicture: picture,
+			admin: "",
 			profilUrl: ``,
 			showUpdateContent: "",
 			showComment: "",
@@ -133,23 +128,43 @@ export default {
 			const comment = {
 				content: this.contentComment,
 				userId: AuthManager.getUserId(),
-				messageId: this.dataMessage.id,
+				messageId: this.dataMessage.id
 			};
-			console.log('comment: ', comment)
+			console.log("comment: ", comment);
 			const headerAuth = AuthManager.getAuthToken();
 			const res = await fetch("http://localhost:3000/api/comments", {
 				method: "POST",
 				headers: {
-					"Content-type": "application/json",	
+					"Content-type": "application/json",
 					Authorization: headerAuth
 				},
-				body:  JSON.stringify(comment)
+				body: JSON.stringify(comment)
 			});
 			if (res.status === 201) {
 				const result = await res.json();
 				this.dataMessage.Comments.push(result);
 			} else {
 				alert("Comment cannot be sent!");
+			}
+		},
+		async updateMessage(id) {
+			const contentMessage = document.getElementById('content-message-input')
+			const headerAuth = AuthManager.getAuthToken();
+			const newContent = contentMessage.value
+			const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
+				method: "PUT",
+				headers: {
+					"Content-type": "application/json",
+					Authorization: headerAuth
+				},
+				body: JSON.stringify({ content: newContent })
+			});
+			if(res.status === 201) {
+				this.dataMessage.content = newContent
+				this.toggleModifyContent()
+
+			} else {
+				alert("content can't be modified!")
 			}
 		},
 		async deleteComment(id) {
@@ -165,7 +180,7 @@ export default {
 				let findCommentIndex = this.dataMessage.Comments.findIndex(
 					comment => comment.id == id
 				);
-				this.dataMessage.Comments.splice(findCommentIndex, 1)
+				this.dataMessage.Comments.splice(findCommentIndex, 1);
 			} else {
 				console.log("Error deleting");
 			}
@@ -178,25 +193,6 @@ export default {
 		},
 		toggleComment() {
 			this.showComment = !this.showComment;
-		},
-		async updateMessage(id) {
-			const headerAuth = AuthManager.getAuthToken();
-			const contentMessage = document.getElementById("content-message-input");
-			const newContent = contentMessage.value;
-			const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
-				method: "PUT",
-				headers: {
-					"Content-type": "application/json",
-					Authorization: headerAuth
-				},
-				body: JSON.stringify({ content: newContent })
-			});
-			if (res.status === 201) {
-				this.dataMessage.content = newContent;
-				this.toggleModifyContent();
-			} else {
-				alert("Content can't be modified!");
-			}
 		}
 	},
 	computed: {
@@ -205,9 +201,10 @@ export default {
 		}
 	},
 	beforeMount: function() {
-		this.profilUrl = `profil/${this.dataMessage.userId}`;
 		const headerAuth = AuthManager.getAuthToken();
 		const userId = AuthManager.getUserId();
+		this.authorMessageUrl = `profil/${this.dataMessage.userId}`;
+		this.profilUrl = `profil/${userId}`;
 		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
 			method: "GET",
 			headers: {
@@ -223,7 +220,14 @@ export default {
 				}
 			})
 			.then(data => {
-				this.ProfilPicture = data.profil.picture;
+				if (data.profil.picture) {
+					this.ProfilPicture = data.profil.picture;
+					console.log("Picture :", this.ProfilPicture);
+				} else {
+					this.ProfilPicture = "/img/user_picture_default.dc8b1732.png";
+					console.log("!Picture :", this.ProfilPicture);
+				}
+				this.admin = data.profil.isAdmin;
 			})
 			.catch(err => console.log(err));
 		console.log("getData: ", this.comments);

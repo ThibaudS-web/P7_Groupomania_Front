@@ -1,18 +1,18 @@
 <template>
 	<div id="container-comment" class="rounded-pill mt-3 d-flex">
 		<div class="container-image-profil">
-			<a :href="profilUrl">
+			<a :href="authorCommentURL">
 				<img
 					id="picture-profil"
-					:src="dataComment.User.picture"
+					:src="dataComment.User.picture || defaultPicture"
 					alt="Photo de l'auteur du commentaire"
 				/>
 			</a>
 		</div>
 		<div class="d-flex flex-column" id="comment-span">
-			<div id="area-comment" class="d-flex flex-column mx-3 rounded">
+			<div  @click="log" id="area-comment" class="d-flex flex-column mx-3 rounded">
 				<span class="align-self-start">{{ dataComment.User.username }}</span>
-				<div id='area-text' v-if="!toggleUpdateInput" class="text-start">
+				<div id="area-text" v-if="!toggleUpdateInput" class="text-start">
 					{{ dataComment.content }}
 				</div>
 				<input
@@ -20,7 +20,7 @@
 					:value="dataComment.content"
 					class="rounded-pill"
 					v-if="toggleUpdateInput"
-				/>
+				/>	
 			</div>
 
 			<div v-if="dataComment.userId == userId" class="d-flex ms-3">
@@ -48,16 +48,16 @@ export default {
 	name: "Comment",
 	data() {
 		return {
+			defaultPicture: "/img/user_picture_default.dc8b1732.png",
 			dataComment: this.comment,
-			UserUrl: this.profilUrl,
 			toggleUpdateInput: false,
 			showSendPicture: false,
-			userId: AuthManager.getUserId()
+			userId: AuthManager.getUserId(),
+			authorCommentURL: `profil/${this.comment.userId}`
 		};
 	},
 	props: {
-		comment: Object,
-		profilUrl: String
+		comment: Object
 	},
 	methods: {
 		toggleUpdate() {
@@ -71,7 +71,7 @@ export default {
 			const contentComment = document.getElementById("content-comment-input");
 			const headerAuth = authManager.getAuthToken();
 			const newComment = contentComment.value;
-			
+
 			const res = await fetch(`http://localhost:3000/api/comments/${id}`, {
 				method: "PUT",
 				headers: {
@@ -82,12 +82,12 @@ export default {
 			});
 			if (res.status === 201) {
 				this.dataComment.content = newComment;
-				this.toggleUpdate()
+				this.toggleUpdate();
 			} else {
 				alert("Content can't be modified!");
 			}
 		}
-	},
+	}
 };
 </script>
 

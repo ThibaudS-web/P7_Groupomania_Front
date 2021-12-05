@@ -1,5 +1,5 @@
 <template>
-	<h1 class="mb-5">
+	<h1 @click="log" class="mb-5">
 		Bienvenue <span v-if="profilData.id != userIdLocal">chez</span> {{ profilData.username }}
 	</h1>
 	<div class="container-md  justify-content-around flex-wrap d-flex">
@@ -85,10 +85,14 @@ export default {
 			targetFile: "",
 			displayBtn: "",
 			bio: "",
-			userIdLocal: AuthManager.getUserId()
+			userIdLocal: AuthManager.getUserId(),
 		};
 	},
+	emits: ['signin-success'],
 	methods: {
+		log(){
+			console.log(this.adminUser)
+		},
 		toggleAddBio() {
 			this.showAddBio = !this.showAddBio;
 		},

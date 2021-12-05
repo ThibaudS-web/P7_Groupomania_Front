@@ -1,15 +1,12 @@
 <template>
-	<h1 class="mb-4">Bienvenue au réseau social de Groupomania</h1>
+	<h1 @click="log" class="mb-4">Bienvenue au réseau social de Groupomania</h1>
 	<Button
 		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
 		:color="showAddMessage ? '#c62828' : '#1565c0'"
 	/>
 	<AddMessage v-show="showAddMessage" @add-message="addMessage" />
-	<Messages
-		@delete-message="deleteMessage"
-		:messages="messages"
-	/>
+	<Messages @delete-message="deleteMessage" :messages="messages" />
 </template>
 
 <script>
@@ -55,6 +52,9 @@ export default {
 			.catch(err => console.log(err));
 	},
 	methods: {
+		log() {
+			console.log(this.adminUser);
+		},
 		toggleAddMessage() {
 			this.showAddMessage = !this.showAddMessage;
 		},
@@ -89,14 +89,15 @@ export default {
 			});
 			if (res.status === 201) {
 				const result = await res.json();
-				this.messages.push(result);
+				this.messages.unshift(result);
 				console.log("POST MESSAGE :", result);
 				this.toggleAddMessage();
 			} else {
 				alert("Message cannot be sent!");
 			}
 		}
-	}
+	},
+	emits: ["signin-success"]
 };
 </script>
 

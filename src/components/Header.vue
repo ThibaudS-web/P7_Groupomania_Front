@@ -13,10 +13,17 @@
 						</a>
 						<div class="nav-connexion">
 							<li class="links">
+								<router-link @click="log" v-if='admin' to="/admin"
+									>Administration</router-link
+								>
+							</li>
+							<li class="links">
 								<router-link :to="url">{{ textLink }}</router-link>
 							</li>
 							<li class="links">
-								<router-link v-show="!showLink" to="/signup">S'enregistrer</router-link>
+								<router-link v-show="!showLink" to="/signup"
+									>S'enregistrer</router-link
+								>
 								<button
 									class="btn btn-secondary btn-sm"
 									v-show="showLink"
@@ -38,16 +45,21 @@ import authManager from "../AuthManager";
 export default {
 	name: "Header",
 	props: {
-		connected: Boolean
+		connected: Boolean,
+		admin: Boolean
 	},
 	data() {
 		return {
 			showLink: "",
 			url: "/signin",
-			textLink: "Se connecter"
+			textLink: "Se connecter",
+			adminUser: ""
 		};
 	},
 	methods: {
+		log() {
+			console.log(this.admin)
+		},
 		logout() {
 			localStorage.removeItem("token");
 			localStorage.removeItem("userId");
@@ -68,7 +80,7 @@ export default {
 			console.log("not connected");
 			this.showLink = false;
 		}
-	}
+	},
 };
 </script>
 

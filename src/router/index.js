@@ -3,6 +3,7 @@ import Signin from '../views/Signin'
 import Signup from '../views/Signup'
 import Home from '../views/Home'
 import Profil from '../views/Profil'
+import Admin from '../views/Admin'
 
 const routes = [
     {
@@ -27,6 +28,12 @@ const routes = [
         path: "/profil/:id",
         name: "Profil",
         component: Profil,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/admin",
+        name: "Admin",
+        component: Admin,
         meta: { requiresAuth: true }
     }
 ]

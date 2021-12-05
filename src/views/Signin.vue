@@ -40,7 +40,7 @@ export default {
 		//Testing form ...
 		fetchUserLogin: function() {
 			const userLog = {
-				email: "thibaud@gmail.com",
+				email: "benjamin@gmail.com",
 				password: "Azerty16?"
 			};
 			console.log(userLog)
