@@ -11,7 +11,7 @@
 		</div>
 		<div class="d-flex flex-column" id="comment-span">
 			<div  @click="log" id="area-comment" class="d-flex flex-column mx-3 rounded">
-				<span class="align-self-start">{{ dataComment.User.username }}</span>
+				<span :style="color" class="align-self-start">{{ dataComment.User.username }}</span>
 				<div id="area-text" v-if="!toggleUpdateInput" class="text-start">
 					{{ dataComment.content }}
 				</div>
@@ -53,7 +53,8 @@ export default {
 			toggleUpdateInput: false,
 			showSendPicture: false,
 			userId: AuthManager.getUserId(),
-			authorCommentURL: `profil/${this.comment.userId}`
+			authorCommentURL: `profil/${this.comment.userId}`,
+			color: ''
 		};
 	},
 	props: {
@@ -86,6 +87,11 @@ export default {
 			} else {
 				alert("Content can't be modified!");
 			}
+		}
+	},
+	beforeMount: function() {
+		if(this.dataComment.User.isAdmin) {
+			this.color = 'color: #c62828'
 		}
 	}
 };
