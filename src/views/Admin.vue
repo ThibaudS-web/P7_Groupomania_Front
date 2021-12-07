@@ -1,7 +1,7 @@
 <template>
 	<h1>Gérer les utilisateurs</h1>
-	<div class="container col-lg-8 mt-5">
-		<table class="table">
+	<div class="container col-lg-10 mt-5">
+		<table class="table ">
 			<thead>
 				<tr>
 					<th scope="col">id</th>
@@ -13,10 +13,17 @@
 
 			<tbody>
 				<tr :key="user" v-for="user in users">
-					<th scope="row">{{ user.id }}</th>
+					<td class="fw-bold">{{ user.id }}</td>
 					<td>{{ user.username }}</td>
 					<td>{{ user.email }}</td>
-					<td><i v-if="!user.isAdmin" @click="deleteUser(user.id)" type="button" class="fas fa-times"></i></td>
+					<td>
+						<i
+							v-if="!user.isAdmin"
+							@click="deleteUser(user.id)"
+							type="button"
+							class="fas fa-times"
+						></i>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -31,8 +38,8 @@ export default {
 		return {
 			users: []
 		};
-	}, 
-    emits: ['signin-success'],
+	},
+	emits: ["signin-success"],
 	beforeMount: function() {
 		const headerAuth = AuthManager.getAuthToken();
 		fetch("http://localhost:3000/api/auth/profils", {
@@ -67,10 +74,8 @@ export default {
 					}
 				});
 				if (res.status === 200) {
-					let findUserIndex = this.users.findIndex(
-						user => user.id == id
-					);
-					this.users.splice(findUserIndex, 1)
+					let findUserIndex = this.users.findIndex(user => user.id == id);
+					this.users.splice(findUserIndex, 1);
 				} else {
 					alert("Error deleting");
 				}
@@ -83,5 +88,12 @@ export default {
 <style scoped>
 .fas {
 	color: #c62828;
+	font-size: 20px;
+}
+
+@media (max-width: 424px) {
+	.container {
+		overflow-x: scroll;
+	}
 }
 </style>

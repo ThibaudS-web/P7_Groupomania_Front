@@ -1,6 +1,6 @@
 <template>
 	<div :key="comment" v-for="comment in comments">
-		<Comment :comment="comment" @delete-comment="deleteComment" />
+		<Comment :comment="comment"  :color="color" @delete-comment="deleteComment" />
 	</div>
 </template>
 
@@ -10,6 +10,7 @@ export default {
 	name: "Comments",
 	props: {
 		comments: Array,
+		color: String
 	},
 	data() {
 		return {};
@@ -20,10 +21,9 @@ export default {
 	methods: {
 		deleteComment(id) {
 			this.$emit("delete-comment", id);
-		}
+		},
+
 	},
-	emits: [
-		"delete-comment"
-	]
+	emits: ["delete-comment"]
 };
 </script>

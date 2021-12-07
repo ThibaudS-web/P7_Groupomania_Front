@@ -10,6 +10,7 @@
 
 				<div class="mt-3 px-3">
 					<input v-model="email" class="form-control" placeholder="E-mail" />
+					<span>Identifiants incorrects !</span>
 				</div>
 
 				<div class="input-group px-3 mt-3">
@@ -35,13 +36,12 @@ export default {
 			password: this.password
 		};
 	},
-	components: {},
 	methods: {
 		//Testing form ...
 		fetchUserLogin: function() {
 			const userLog = {
-				email: "admin@gmail.com",
-				password: "Azerty16?"
+				email: this.email,
+				password: this.password
 			};
 			console.log(userLog)
 			fetch("http://localhost:3000/api/auth/login", {
@@ -70,3 +70,6 @@ export default {
 	}
 };
 </script>
+<style scoped>
+
+</style>

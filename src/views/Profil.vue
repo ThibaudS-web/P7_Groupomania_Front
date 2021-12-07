@@ -2,7 +2,7 @@
 	<h1 @click="log" class="mb-5">
 		Bienvenue <span v-if="profilData.id != userIdLocal">chez</span> {{ profilData.username }}
 	</h1>
-	<div class="container-md  justify-content-around flex-wrap d-flex">
+	<div class="container-md justify-content-around flex-wrap d-flex">
 		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
 			<img id="image-user" :src="profilData.picture" alt="image utilisateur" />
 			<div class="input-group mb-3">
@@ -228,5 +228,16 @@ img {
 	object-fit: contain;
 	width: 250px;
 	height: 250px;
+}
+
+@media (max-width: 576px) {
+	.container-md {
+		padding: 0;
+	}
+	#container-profil-photo{
+		border-radius: 0;
+		padding-top: 0;
+		width: 100%;
+	}
 }
 </style>

@@ -93,7 +93,12 @@
 			/>
 			<i @click="addComment" type="button" class="fas fa-share align-self-center"></i>
 		</div>
-		<Comments v-if="showComment" :comments="comments" @delete-comment="deleteComment" />
+		<Comments
+			v-if="showComment"
+			:color="color"
+			:comments="comments"
+			@delete-comment="deleteComment"
+		/>
 	</div>
 </template>
 
@@ -114,7 +119,8 @@ export default {
 			showUpdateContent: "",
 			showComment: "",
 			comments: this.message.Comments,
-			contentComment: ""
+			contentComment: "",
+			color: ""
 		};
 	},
 	props: {
@@ -130,7 +136,6 @@ export default {
 				userId: AuthManager.getUserId(),
 				messageId: this.dataMessage.id
 			};
-			console.log("comment: ", comment);
 			const headerAuth = AuthManager.getAuthToken();
 			const res = await fetch("http://localhost:3000/api/comments", {
 				method: "POST",
@@ -143,14 +148,15 @@ export default {
 			if (res.status === 201) {
 				const result = await res.json();
 				this.dataMessage.Comments.push(result);
+				this.contentComment = "";
 			} else {
 				alert("Comment cannot be sent!");
 			}
 		},
 		async updateMessage(id) {
-			const contentMessage = document.getElementById('content-message-input')
+			const contentMessage = document.getElementById("content-message-input");
 			const headerAuth = AuthManager.getAuthToken();
-			const newContent = contentMessage.value
+			const newContent = contentMessage.value;
 			const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
 				method: "PUT",
 				headers: {
@@ -159,12 +165,11 @@ export default {
 				},
 				body: JSON.stringify({ content: newContent })
 			});
-			if(res.status === 201) {
-				this.dataMessage.content = newContent
-				this.toggleModifyContent()
-
+			if (res.status === 201) {
+				this.dataMessage.content = newContent;
+				this.toggleModifyContent();
 			} else {
-				alert("content can't be modified!")
+				alert("content can't be modified!");
 			}
 		},
 		async deleteComment(id) {
@@ -322,5 +327,11 @@ img {
 #area-comment > span {
 	color: black;
 	font-weight: bold;
+}
+
+@media (max-width: 576px) {
+	.container{
+		border-radius: 0;
+	}
 }
 </style>

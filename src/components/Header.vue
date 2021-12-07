@@ -3,7 +3,7 @@
 		<div class="bg-light">
 			<div class="container mb-5">
 				<div class="row">
-					<nav class="navbar navbar-expand-lg navbar-dark">
+					<nav class="navbar flex-col navbar-expand-lg navbar-dark">
 						<a href="/"
 							><img
 								src="../logos/icon-left-font-monochrome-black.svg"
@@ -11,11 +11,9 @@
 								height="200"
 							/>
 						</a>
-						<div class="nav-connexion">
+						<div class="nav-connexion d-flex flex-col">
 							<li class="links">
-								<router-link @click="log" v-if='admin' to="/admin"
-									>Administration</router-link
-								>
+								<router-link v-if="admin" to="/admin">Administration</router-link>
 							</li>
 							<li class="links">
 								<router-link :to="url">{{ textLink }}</router-link>
@@ -57,9 +55,6 @@ export default {
 		};
 	},
 	methods: {
-		log() {
-			console.log(this.admin)
-		},
 		logout() {
 			localStorage.removeItem("token");
 			localStorage.removeItem("userId");
@@ -80,7 +75,7 @@ export default {
 			console.log("not connected");
 			this.showLink = false;
 		}
-	},
+	}
 };
 </script>
 
@@ -103,5 +98,16 @@ a {
 	color: #2c3e50;
 	text-decoration: none;
 	font-weight: bold;
+}
+@media (max-width: 576px) {
+	.flex-col {
+		flex-direction: column;
+	}
+	img{
+		z-index: 0;
+	}
+	li{
+		margin: 5px 0 5px 0;
+	}
 }
 </style>

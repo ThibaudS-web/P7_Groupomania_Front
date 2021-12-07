@@ -10,8 +10,10 @@
 			</a>
 		</div>
 		<div class="d-flex flex-column" id="comment-span">
-			<div  @click="log" id="area-comment" class="d-flex flex-column mx-3 rounded">
-				<span :style="color" class="align-self-start">{{ dataComment.User.username }}</span>
+			<div id="area-comment" class="d-flex flex-column mx-3 rounded">
+				<span :style="{ color: usernameColor }" class="fw-bold align-self-start">{{
+					dataComment.User.username
+				}}</span>
 				<div id="area-text" v-if="!toggleUpdateInput" class="text-start">
 					{{ dataComment.content }}
 				</div>
@@ -20,7 +22,7 @@
 					:value="dataComment.content"
 					class="rounded-pill"
 					v-if="toggleUpdateInput"
-				/>	
+				/>
 			</div>
 
 			<div v-if="dataComment.userId == userId" class="d-flex ms-3">
@@ -54,11 +56,12 @@ export default {
 			showSendPicture: false,
 			userId: AuthManager.getUserId(),
 			authorCommentURL: `profil/${this.comment.userId}`,
-			color: ''
+			usernameColor: this.color
 		};
 	},
 	props: {
-		comment: Object
+		comment: Object,
+		color: String
 	},
 	methods: {
 		toggleUpdate() {
@@ -90,9 +93,11 @@ export default {
 		}
 	},
 	beforeMount: function() {
-		if(this.dataComment.User.isAdmin) {
-			this.color = 'color: #c62828'
+		if (this.dataComment.User.isAdmin) {
+			this.usernameColor = "red";
+			console.log("color :", this.usernameColor);	
 		}
+		console.log(this.dataComment)
 	}
 };
 </script>
@@ -130,7 +135,6 @@ export default {
 }
 #area-comment > span {
 	color: black;
-	font-weight: bold;
 }
 #area-text {
 	overflow-wrap: break-word;
