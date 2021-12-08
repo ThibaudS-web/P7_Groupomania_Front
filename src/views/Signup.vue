@@ -8,6 +8,7 @@
 					<router-link to="/signin">Se connecter</router-link>
 				</div>
 				<form>
+					<!-- Username  -->
 					<div class="mt-3 d-flex flex-column px-3 position-relative">
 						<label class="align-self-start fw-bold" for="user-input"
 							>Nom d'utilisateur</label
@@ -27,7 +28,7 @@
 						<i v-if="isValidUser" class="fas fa-check-circle position-absolute"></i>
 						<span class="align-self-start  unvalid-text">{{ textErrorUser }}</span>
 					</div>
-
+					<!-- Password  -->
 					<div class="d-flex flex-column px-3 mt-3  position-relative">
 						<div class="d-flex justify-content-between">
 							<label
@@ -35,15 +36,16 @@
 								for="user-input"
 								>Mot de passe</label
 							>
+							<!-- Show password picture -->
 							<div>
 								<i
-									v-if="hiddenPassword"
+									v-if="!hiddenPassword"
 									@click="showPassword"
 									type="button"
 									class="fas fa-eye align-self-center"
 								></i>
 								<i
-									v-if="!hiddenPassword"
+									v-if="hiddenPassword"
 									@click="showPassword"
 									type="button"
 									class="fas fa-eye-slash align-self-center"
@@ -67,7 +69,7 @@
 						<i v-if="isValidPass" class="fas fa-check-circle position-absolute"></i>
 						<span class="align-self-start unvalid-text">{{ textErrorPassword }}</span>
 					</div>
-
+					<!-- Email  -->
 					<div class="mt-3 d-flex flex-column px-3 position-relative">
 						<label class="align-self-start fw-bold" for="user-input"
 							>Adresse mail</label
@@ -88,6 +90,7 @@
 						<span class="align-self-start unvalid-text">{{ textErrorEmail }}</span>
 					</div>
 				</form>
+				<!-- Submit  -->
 				<button class="btn btn-primary btn-block" @click="fetchCreateUser">
 					Créer le compte
 				</button>
@@ -173,8 +176,7 @@ export default {
 			const usernameValid =
 				newUser.username !== undefined &&
 				newUser.username !== "" &&
-				Utils.verifyInterval(newUser.username.length, 3, 10);
-			// !(newUser.username.length < 3 || newUser.username.length > 10);
+				Utils.verifyInterval(newUser.username.length, 3, 20);
 
 			const emailIValid =
 				newUser.email !== undefined &&
@@ -212,7 +214,7 @@ export default {
 							alert(
 								`L'utilisateur ${newUser.username} a bien été crée, vous pouvez vous connecter.`
 							);
-							window.location.replace("http://localhost:8080/signin");
+							this.$router.push("/signin");
 							return res.json();
 						} else {
 							alert("Une erreur est survenue");
@@ -225,9 +227,9 @@ export default {
 					usernameInput.setAttribute("class", "unvalid-border form-control");
 					this.textErrorUser = "Indiquez votre nom d'utilisateur";
 					this.isValidUser = false;
-				} else if (!Utils.verifyInterval(newUser.username.length, 3, 10)) {
+				} else if (!Utils.verifyInterval(newUser.username.length, 3, 20)) {
 					usernameInput.setAttribute("class", "unvalid-border form-control");
-					this.textErrorUser = "Doit contenir entre 3 et 10 caractères";
+					this.textErrorUser = "Doit contenir entre 3 et 20 caractères";
 					this.isValidUser = false;
 				} else {
 					usernameInput.setAttribute("class", "form-control valid");

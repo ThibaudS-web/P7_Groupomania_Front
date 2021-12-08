@@ -32,13 +32,13 @@
 						>
 						<div>
 							<i
-								v-if="hiddenPassword"
+								v-if="!hiddenPassword"
 								@click="showPassword"
 								type="button"
 								class="fas fa-eye align-self-center"
 							></i>
 							<i
-								v-if="!hiddenPassword"
+								v-if="hiddenPassword"
 								@click="showPassword"
 								type="button"
 								class="fas fa-eye-slash align-self-center"

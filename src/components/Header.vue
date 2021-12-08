@@ -11,7 +11,7 @@
 								height="200"
 							/>
 						</a>
-						<div class="nav-connexion d-flex flex-col">
+						<ul class="nav-connexion d-flex flex-col">
 							<li class="links">
 								<router-link v-if="admin" to="/admin">Administration</router-link>
 							</li>
@@ -30,7 +30,7 @@
 									Se déconnecter
 								</button>
 							</li>
-						</div>
+						</ul>
 					</nav>
 				</div>
 			</div>

@@ -5,6 +5,7 @@
 		submit="onSubmit"
 		class="container col-xxl-4 col-lg-5 col-md-6"
 	>
+		<!-- Title -->
 		<div class="mb-3">
 			<label for="title" class="form-label">Titre</label>
 			<input
@@ -16,6 +17,7 @@
 				id="title"
 			/>
 		</div>
+		<!-- Content Message -->
 		<div class="mb-3">
 			<label for="message" class="form-label">Message</label>
 			<textarea
@@ -27,6 +29,7 @@
 				rows="3"
 			></textarea>
 		</div>
+		<!-- Image -->
 		<div class="mb-3">
 			<label for="formFile" class="form-label">Choisissez votre image...</label>
 			<input
@@ -37,8 +40,9 @@
 				name="attachment"
 			/>
 		</div>
+		<!-- Submit -->
 		<input
-			id='btn-submit-message'
+			id="btn-submit-message"
 			@click="onSubmit"
 			type="submit"
 			value="Envoyez votre message"
@@ -83,7 +87,7 @@ export default {
 			this.attachment = "";
 		},
 		previewFiles(event) {
-			this.attachment = event.target.files[0]
+			this.attachment = event.target.files[0];
 			console.log(this.attachment);
 		}
 	}

@@ -4,7 +4,7 @@
 	</h1>
 	<div class="container-md justify-content-around flex-wrap d-flex">
 		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
-			<img id="image-user" :src="profilData.picture" alt="image utilisateur" />
+			<img  id="image-user" :src="profilData.picture" alt="image utilisateur" />
 			<div class="input-group mb-3">
 				<input
 					v-if="profilData.id == userIdLocal"
@@ -228,6 +228,12 @@ img {
 	object-fit: contain;
 	width: 250px;
 	height: 250px;
+}
+
+@media (max-width: 768px) {
+	img{
+		align-self: center;
+	}
 }
 
 @media (max-width: 576px) {
