@@ -1,7 +1,7 @@
 <template>
 	<div class="body-background">
 		<div class="container-fluid d-flex justify-content-center align-items-center h-100">
-			<div class="card col-lg-3   p-3 text-center py-4">
+			<div class="card col-lg-4 col-xl-3  p-3 text-center py-4">
 				<h4>Créer un compte</h4>
 				<div>
 					<span>Tu as déjà un compte ? </span>
@@ -13,7 +13,7 @@
 							>Nom d'utilisateur</label
 						>
 						<input
-						@input="resetValidationUsername"
+							@input="resetValidationUsername"
 							id="user-input"
 							v-model="username"
 							class="form-control mb-4 "
@@ -28,15 +28,34 @@
 						<span class="align-self-start  unvalid-text">{{ textErrorUser }}</span>
 					</div>
 
-					<div class="d-flex flex-column px-3 mt-3 position-relative">
-						<label class="align-self-start fw-bold" for="user-input"
-							>Mot de passe</label
-						>
+					<div class="d-flex flex-column px-3 mt-3  position-relative">
+						<div class="d-flex justify-content-between">
+							<label
+								class="align-self-start justify-content-between fw-bold"
+								for="user-input"
+								>Mot de passe</label
+							>
+							<div>
+								<i
+									v-if="hiddenPassword"
+									@click="showPassword"
+									type="button"
+									class="fas fa-eye align-self-center"
+								></i>
+								<i
+									v-if="!hiddenPassword"
+									@click="showPassword"
+									type="button"
+									class="fas fa-eye-slash align-self-center"
+								></i>
+							</div>
+						</div>
+
 						<input
-						@input="resetValidationPassword"
+							@input="resetValidationPassword"
 							id="password-input"
 							v-model="password"
-							type="text"
+							type="password"
 							class="form-control mb-4"
 							placeholder="Password"
 							aria-label="Password"
@@ -69,14 +88,7 @@
 						<span class="align-self-start unvalid-text">{{ textErrorEmail }}</span>
 					</div>
 				</form>
-				<button
-					data-bs-container="body"
-					data-bs-toggle="popover"
-					data-bs-placement="right"
-					data-bs-content="Right popover"
-					class="btn btn-primary btn-block"
-					@click="fetchCreateUser"
-				>
+				<button class="btn btn-primary btn-block" @click="fetchCreateUser">
 					Créer le compte
 				</button>
 			</div>
@@ -113,10 +125,21 @@ export default {
 			textErrorUser: "",
 			isValidUser: "",
 			isValidPass: "",
-			isValidMail: ""
+			isValidMail: "",
+			hiddenPassword: true
 		};
 	},
 	methods: {
+		showPassword() {
+			const passwordInput = document.getElementById("password-input");
+			if (this.hiddenPassword) {
+				passwordInput.type = "type";
+				this.hiddenPassword = !this.hiddenPassword;
+			} else {
+				passwordInput.type = "password";
+				this.hiddenPassword = !this.hiddenPassword;
+			}
+		},
 		resetValidationEmail() {
 			const emailInput = document.getElementById("mail-input");
 			this.textErrorEmail = "";
