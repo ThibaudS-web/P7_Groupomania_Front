@@ -58,7 +58,6 @@ export default {
 			})
 			.then(profils => {
 				this.users = profils;
-				console.log("GET profils: ", this.users);
 			})
 			.catch(err => console.log(err));
 	},

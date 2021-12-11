@@ -95,9 +95,7 @@ export default {
 	beforeMount: function() {
 		if (this.dataComment.User.isAdmin) {
 			this.usernameColor = "red";
-			console.log("color :", this.usernameColor);	
 		}
-		console.log(this.dataComment)
 	}
 };
 </script>

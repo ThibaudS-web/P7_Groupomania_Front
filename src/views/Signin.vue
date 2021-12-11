@@ -7,66 +7,72 @@
 					<span>Tu n'as pas de compte ? </span>
 					<router-link to="/signup">S'enregistrer</router-link>
 				</div>
-
-				<div class="mt-3 d-flex flex-column position-relative px-3">
-					<label class="align-self-start fw-bold" for="mail-input">Adresse mail</label>
-					<input
-						@input="resetValidationEmail"
-						id="mail-input"
-						v-model="email"
-						class="form-control mt-2 mb-3"
-						placeholder="exemple@domaine.com"
-					/>
-					<i
-						v-if="isValidMail === false"
-						class="fas fa-exclamation-circle position-absolute"
-					></i>
-					<i v-if="isValidMail" class="fas fa-check-circle position-absolute"></i>
-					<span class="align-self-start unvalid-text">{{ textErrorEmail }}</span>
-				</div>
-
-				<div class="d-flex flex-column position-relative px-3 mt-3">
-					<div class="d-flex justify-content-between">
-						<label class="align-self-start fw-bold" for="password-input"
-							>Mot de passe</label
+				<form>
+					<div class="mt-3 d-flex flex-column position-relative px-3">
+						<label class="align-self-start fw-bold" for="mail-input"
+							>Adresse mail</label
 						>
-						<div>
-							<i
-								v-if="!hiddenPassword"
-								@click="showPassword"
-								type="button"
-								class="fas fa-eye align-self-center"
-							></i>
-							<i
-								v-if="hiddenPassword"
-								@click="showPassword"
-								type="button"
-								class="fas fa-eye-slash align-self-center"
-							></i>
-						</div>
+						<input
+							@input="resetValidationEmail"
+							id="mail-input"
+							v-model="email"
+							class="form-control mt-2 mb-3"
+							placeholder="exemple@domaine.com"
+						/>
+						<i
+							v-if="isValidMail === false"
+							class="fas fa-exclamation-circle position-absolute"
+						></i>
+						<i v-if="isValidMail" class="fas fa-check-circle position-absolute"></i>
+						<span class="align-self-start unvalid-text">{{ textErrorEmail }}</span>
 					</div>
 
-					<input
-						@input="resetValidationPassword"
-						id="password-input"
-						v-model="password"
-						type="password"
-						class="form-control mb-3"
-						placeholder="Password"
-						aria-label="Password"
-					/>
-					<i
-						v-if="isValidPass === false"
-						class="fas fa-exclamation-circle position-absolute"
-					></i>
-					<i v-if="isValidPass" class="fas fa-check-circle position-absolute"></i>
-					<span id="span-password" class="align-self-start unvalid-text">{{
-						textErrorPassword
-					}}</span>
-				</div>
+					<div class="d-flex flex-column position-relative px-3 mt-3">
+						<div class="d-flex justify-content-between">
+							<label class="align-self-start fw-bold" for="password-input"
+								>Mot de passe</label
+							>
+							<div>
+								<i
+									v-if="!hiddenPassword"
+									@click="showPassword"
+									type="button"
+									class="fas fa-eye align-self-center"
+								></i>
+								<i
+									v-if="hiddenPassword"
+									@click="showPassword"
+									type="button"
+									class="fas fa-eye-slash align-self-center"
+								></i>
+							</div>
+						</div>
 
+						<input
+							@input="resetValidationPassword"
+							id="password-input"
+							v-model="password"
+							type="password"
+							class="form-control mb-3"
+							placeholder="Password"
+							aria-label="Password"
+						/>
+						<i
+							v-if="isValidPass === false"
+							class="fas fa-exclamation-circle position-absolute"
+						></i>
+						<i v-if="isValidPass" class="fas fa-check-circle position-absolute"></i>
+						<span id="span-password" class="align-self-start unvalid-text">{{
+							textErrorPassword
+						}}</span>
+					</div>
+				</form>
 				<span class="unvalid-text mt-2">{{ textError }}</span>
-				<button class="btn btn-primary btn-block mt-3" @click="fetchUserLogin">
+				<button
+					id="btn-submit"
+					class="btn btn-primary btn-block mt-3"
+					@click="fetchUserLogin"
+				>
 					Se connecter
 				</button>
 			</div>
@@ -201,7 +207,6 @@ export default {
 						}
 					})
 					.then(dataToken => {
-						console.log(dataToken);
 						localStorage.setItem("token", JSON.stringify(dataToken.token));
 						localStorage.setItem("userId", JSON.stringify(dataToken.userId));
 						this.$router.push("/");
@@ -246,6 +251,13 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 1600px) {
+	#btn-submit {
+		width: 40%;
+		align-self: center;
+	}
+}
+
 .valid {
 	border: 2px #2e7d32 solid;
 }

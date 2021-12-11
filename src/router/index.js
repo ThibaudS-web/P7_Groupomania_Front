@@ -46,15 +46,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token')
-    console.log(token)
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!token) {
-            console.log(!token)
             next({
                 name: "Signin"
             });
         } else {
-            console.log('Token Valide !')
             next()
         }
     } else {

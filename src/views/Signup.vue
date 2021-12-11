@@ -210,7 +210,6 @@ export default {
 				})
 					.then(res => {
 						if (res.status === 201) {
-							console.log("User created!");
 							alert(
 								`L'utilisateur ${newUser.username} a bien été crée, vous pouvez vous connecter.`
 							);

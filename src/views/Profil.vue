@@ -1,5 +1,5 @@
 <template>
-	<h1 @click="log" class="mb-5">
+	<h1 class="mb-5">
 		Bienvenue <span v-if="profilData.id != userIdLocal">chez</span> {{ profilData.username }}
 	</h1>
 	<div class="container-md justify-content-around flex-wrap d-flex">
@@ -90,9 +90,6 @@ export default {
 	},
 	emits: ['signin-success'],
 	methods: {
-		log(){
-			console.log(this.adminUser)
-		},
 		toggleAddBio() {
 			this.showAddBio = !this.showAddBio;
 		},
@@ -177,7 +174,6 @@ export default {
 				}
 			})
 			.then(data => {
-				console.log("data profil: ", data.profil);
 				this.profilData = data.profil;
 				if (this.profilData.picture === null) {
 					this.profilData.picture = this.defaultPicture;

@@ -21,20 +21,16 @@ export default {
 	methods: {
 		onSigninSuccess() {
 			this.connected = true;
-			console.log("co: ", this.connected);
 		},
 		logOut() {
 			this.connected = false;
 		}
 	},
 	mounted: function() {
-		console.log("beforeMount-App : Hello");
 		if (AuthManager.isTokenAvailable()) {
 			this.connected = true;
-			console.log("connected :", this.connected);
 		} else {
 			this.connected = false;
-			console.log("not connected :", this.connected);
 		}
 	},
 	updated: function()  {

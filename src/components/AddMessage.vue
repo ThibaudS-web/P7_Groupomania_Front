@@ -88,7 +88,6 @@ export default {
 		},
 		previewFiles(event) {
 			this.attachment = event.target.files[0];
-			console.log(this.attachment);
 		}
 	}
 };

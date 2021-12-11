@@ -1,5 +1,5 @@
 <template>
-	<h1 @click="log" class="mb-4">Bienvenue au réseau social de Groupomania</h1>
+	<h1 class="mb-4">Bienvenue au réseau social de Groupomania</h1>
 	<Button
 		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
@@ -47,14 +47,10 @@ export default {
 			})
 			.then(dataMessages => {
 				this.messages = dataMessages.messages;
-				console.log("GET MESSAGES: ", this.messages);
 			})
 			.catch(err => console.log(err));
 	},
 	methods: {
-		log() {
-			console.log(this.adminUser);
-		},
 		toggleAddMessage() {
 			this.showAddMessage = !this.showAddMessage;
 		},
@@ -72,7 +68,6 @@ export default {
 					? (this.messages = this.messages.filter(message => message.id !== id))
 					: alert("Error deleting message!");
 			}
-			console.log(id);
 		},
 		async addMessage(message) {
 			const headerAuth = AuthManager.getAuthToken();
@@ -90,7 +85,6 @@ export default {
 			if (res.status === 201) {
 				const result = await res.json();
 				this.messages.unshift(result);
-				console.log("POST MESSAGE :", result);
 				this.toggleAddMessage();
 			} else {
 				alert("Message cannot be sent!");

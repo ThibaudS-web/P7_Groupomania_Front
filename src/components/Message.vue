@@ -22,7 +22,7 @@
 					@click="deleteMessage(dataMessage.id)"
 					class="fas  fa-times"
 					type="button"
-					title="Supprimer le message"
+					aria-label="Supprimer le message"
 				></i>
 				<i
 					v-if="dataUserId == dataMessage.userId"
@@ -187,7 +187,7 @@ export default {
 				);
 				this.dataMessage.Comments.splice(findCommentIndex, 1);
 			} else {
-				console.log("Error deleting");
+				alert("Error deleting");
 			}
 		},
 		deleteMessage(id) {
@@ -227,15 +227,12 @@ export default {
 			.then(data => {
 				if (data.profil.picture) {
 					this.ProfilPicture = data.profil.picture;
-					console.log("Picture :", this.ProfilPicture);
 				} else {
 					this.ProfilPicture = "/img/user_picture_default.dc8b1732.png";
-					console.log("!Picture :", this.ProfilPicture);
 				}
 				this.admin = data.profil.isAdmin;
 			})
 			.catch(err => console.log(err));
-		console.log("getData: ", this.comments);
 	},
 	mounted: function() {
 		if (this.dataMessage.User.picture === null) {
