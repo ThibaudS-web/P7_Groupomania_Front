@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.18.1",
+    "email-validator": "^2.0.4",
+    "password-validator": "^5.1.1",
     "vue": "^3.2.19",
-    "vue-loader-v16": "^16.0.0-beta.5.4"
+    "vue-loader-v16": "^16.0.0-beta.5.4",
+    "vue-loading-overlay": "^4.0.4",
+    "vue-router": "^4.0.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",
