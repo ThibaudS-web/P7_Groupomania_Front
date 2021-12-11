@@ -67,12 +67,10 @@ export default {
 	},
 	beforeUpdate: function() {
 		if (this.connected) {
-			console.log("connected");
 			this.showLink = true;
 			this.url = `/profil/${authManager.getUserId()}`;
 			this.textLink = "Mon profil";
 		} else {
-			console.log("not connected");
 			this.showLink = false;
 		}
 	}
@@ -103,10 +101,10 @@ a {
 	.flex-col {
 		flex-direction: column;
 	}
-	img{
+	img {
 		z-index: 0;
 	}
-	li{
+	li {
 		margin: 5px 0 5px 0;
 	}
 }
