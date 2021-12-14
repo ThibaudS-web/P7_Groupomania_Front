@@ -13,7 +13,7 @@
 					/>
 				</a>
 			</div>
-			<h2 id="username-text" class="h6 align-self-center">
+			<h2 id="username-text" class="h6  align-self-center">
 				Crée par {{ dataMessage.User.username }}
 			</h2>
 			<div class="d-flex ms-auto p-2 flex-column justify-content-between">
@@ -272,7 +272,7 @@ export default {
 }
 .container-image-message {
 	max-width: 300px;
-	max-height: 300px;
+	max-height: 100%;
 	margin: auto;
 }
 #picture-profil {
