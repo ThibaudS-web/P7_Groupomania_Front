@@ -7,7 +7,7 @@
 	>
 		<!-- Title -->
 		<div class="mb-3">
-			<label for="title" class="form-label">Titre</label>
+			<label for="title" class="form-label fw-bold">Titre</label>
 			<input
 				name="title"
 				v-model="title"
@@ -19,7 +19,7 @@
 		</div>
 		<!-- Content Message -->
 		<div class="mb-3">
-			<label for="message" class="form-label">Message</label>
+			<label for="message" class="fw-bold form-label">Message</label>
 			<textarea
 				name="content"
 				v-model="content"
@@ -31,7 +31,7 @@
 		</div>
 		<!-- Image -->
 		<div class="mb-3">
-			<label for="formFile" class="form-label">Choisissez votre image...</label>
+			<label for="formFile" class="fw-bold form-label">Choisissez votre image...</label>
 			<input
 				class="form-control"
 				type="file"

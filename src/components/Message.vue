@@ -2,6 +2,7 @@
 	<div
 		class="container col-xxl-5 col-xl-6 col-lg-7 col-md-8 bg-light bg-gradient mb-5 pb-4 pt-2 px-4"
 	>
+		<!-- Image and URL message author  -->
 		<div id="header-message" class="d-flex">
 			<div class="container-image-profil">
 				<a :href="authorMessageUrl">
@@ -13,9 +14,11 @@
 					/>
 				</a>
 			</div>
+			<!-- Username message author -->
 			<h2 id="username-text" class="h6  align-self-center">
 				Crée par {{ dataMessage.User.username }}
 			</h2>
+			<!-- Icons for modify and delete action on the message. They appear if the user is the author of this message or an admin user. -->
 			<div class="d-flex ms-auto p-2 flex-column justify-content-between">
 				<i
 					v-if="dataUserId == dataMessage.userId || admin"
@@ -33,6 +36,7 @@
 				></i>
 			</div>
 		</div>
+		<!-- Body message  -->
 		<h3 class="h2 mt-3">{{ dataMessage.title }}</h3>
 		<p v-if="!showUpdateContent">{{ dataMessage.content }}</p>
 		<div class="d-flex">
@@ -57,6 +61,7 @@
 		>
 			Cliquer pour <span>Annuler</span>
 		</div>
+		<!-- if hasImage = false,  user did not send an image. The div is not display  -->
 		<div v-if="hasImage" class="container-image-message">
 			<img
 				id="picture-message"
@@ -65,6 +70,7 @@
 				alt="Une image dans le message"
 			/>
 		</div>
+		<!-- Display the part for add a comment -->
 		<div id="footer-message" class="mt-3 d-flex">
 			<i
 				type="button"
@@ -75,6 +81,7 @@
 				Commenter</i
 			>
 		</div>
+		<!-- the part for add a comment  -->
 		<div id="add-comment" v-if="showComment" class="mt-3 d-flex">
 			<div class="container-image-profil">
 				<a :href="profilUrl">
@@ -327,7 +334,7 @@ img {
 }
 
 @media (max-width: 576px) {
-	.container{
+	.container {
 		border-radius: 0;
 	}
 }

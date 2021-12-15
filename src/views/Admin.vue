@@ -18,7 +18,6 @@
 					<td>{{ user.email }}</td>
 					<td>
 						<i
-							v-if="!user.isAdmin"
 							@click="deleteUser(user.id)"
 							type="button"
 							class="fas fa-times"

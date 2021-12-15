@@ -1,5 +1,6 @@
 <template>
 	<div id="container-comment" class="rounded-pill mt-3 d-flex">
+		<!-- Image and URL profil comment author -->
 		<div class="container-image-profil">
 			<a :href="authorCommentURL">
 				<img
@@ -9,6 +10,7 @@
 				/>
 			</a>
 		</div>
+		<!-- Content comment and username author -->
 		<div class="d-flex flex-column" id="comment-span">
 			<div id="area-comment" class="d-flex flex-column mx-3 rounded">
 				<span :style="{ color: usernameColor }" class="fw-bold align-self-start">{{
@@ -24,7 +26,7 @@
 					v-if="toggleUpdateInput"
 				/>
 			</div>
-
+			<!-- ACTIONS on Comment, modify or delete -->
 			<div v-if="dataComment.userId == userId" class="d-flex ms-3">
 				<div id="actions-comment">
 					Cliquer pour
@@ -34,6 +36,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- Icon for send the modified comment -->
 		<i
 			v-if="showSendPicture"
 			@click="updateComment(dataComment.id)"

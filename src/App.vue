@@ -26,6 +26,7 @@ export default {
 			this.connected = false;
 		}
 	},
+	// If token exist, the user is connected
 	mounted: function() {
 		if (AuthManager.isTokenAvailable()) {
 			this.connected = true;
@@ -33,6 +34,7 @@ export default {
 			this.connected = false;
 		}
 	},
+	// Verify if the user is an admin
 	updated: function()  {
 		if (this.connected) {
 			const userId = AuthManager.getUserId()
