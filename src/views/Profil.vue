@@ -3,8 +3,10 @@
 		Bienvenue <span v-if="profilData.id != userIdLocal">chez</span> {{ profilData.username }}
 	</h1>
 	<div class="container-md justify-content-around flex-wrap d-flex">
+		<!-- IMAGE USER -->
 		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
 			<img  id="image-user" :src="profilData.picture" alt="image utilisateur" />
+			<!-- LOAD THE PICTURE IN THIS INPUT -->
 			<div class="input-group mb-3">
 				<input
 					v-if="profilData.id == userIdLocal"
@@ -14,6 +16,7 @@
 					id="pictureInput"
 				/>
 			</div>
+			<!-- BTN MODIFY PICTURE PROFIL -->
 			<button
 				v-if="profilData.id == userIdLocal"
 				@click="modifyPicture"
@@ -22,6 +25,7 @@
 			>
 				Mettre à jour photo
 			</button>
+			<!-- BTN DELETE PICTURE PROFIL -->
 			<button
 				v-if="profilData.id == userIdLocal"
 				id="btn-delete-photo"
@@ -33,7 +37,8 @@
 			</button>
 		</div>
 		<div class="d-flex col-lg-5 flex-column">
-			<div v-if="profilData.bio" class="border my-3 rounded p-3 border-2 border-dark">
+			<!-- CONTAIN THE BIO PROFIL -->
+			<div v-if="profilData.bio" class="border text-start my-3 rounded p-3 border-2 border-dark">
 				{{ profilData.bio }}
 			</div>
 			<Button
@@ -43,6 +48,7 @@
 				:text="text"
 				color="#424242"
 			/>
+			<!-- FIELD FOR MODIFY THE CONTENT BIO PROFIL-->
 			<textarea
 				v-if="showAddBio"
 				v-model="bio"
@@ -51,9 +57,9 @@
 				id="bio"
 				cols="20"
 				rows="4"
-				class="mt-3 form-control-lg"
+				class="mt-3 text-start form-control-lg"
 			></textarea>
-
+			<!-- BTN FOR UPDATE THE BIO PROFIL -->
 			<button
 				id="btn-update-bio"
 				v-if="showAddBio"

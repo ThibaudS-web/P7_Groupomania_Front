@@ -23,7 +23,7 @@
 				<i
 					v-if="dataUserId == dataMessage.userId || admin"
 					@click="deleteMessage(dataMessage.id)"
-					class="fas  fa-times"
+					class="fas  fa-times"	
 					type="button"
 					aria-label="Supprimer le message"
 				></i>
