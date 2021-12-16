@@ -38,7 +38,7 @@
 		</div>
 		<!-- Body message  -->
 		<h3 class="h2 mt-3">{{ dataMessage.title }}</h3>
-		<p v-if="!showUpdateContent">{{ dataMessage.content }}</p>
+		<p class="text-sm-start" v-if="!showUpdateContent">{{ dataMessage.content }}</p>
 		<div class="d-flex">
 			<input
 				v-if="showUpdateContent"
