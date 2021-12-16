@@ -243,8 +243,7 @@ export default {
 				this.admin = data.profil.isAdmin;
 			})
 			.catch(err => console.log(err));
-	},
-	mounted: function() {
+		//If the user does not have a photo, he will have one by default
 		if (this.dataMessage.User.picture === null) {
 			this.dataMessage.User.picture = this.defaultPicture;
 		}

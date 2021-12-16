@@ -51,7 +51,6 @@ export default {
 			showLink: "",
 			url: "/signin",
 			textLink: "Se connecter",
-			adminUser: ""
 		};
 	},
 	methods: {
