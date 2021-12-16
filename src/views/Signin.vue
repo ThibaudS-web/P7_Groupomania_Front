@@ -8,6 +8,7 @@
 					<router-link to="/signup">S'enregistrer</router-link>
 				</div>
 				<form>
+					<!-- E-MAIL -->
 					<div class="mt-3 d-flex flex-column position-relative px-3">
 						<label class="align-self-start fw-bold" for="mail-input"
 							>Adresse mail</label
@@ -26,12 +27,13 @@
 						<i v-if="isValidMail" class="fas fa-check-circle position-absolute"></i>
 						<span class="align-self-start unvalid-text">{{ textErrorEmail }}</span>
 					</div>
-
+					<!-- PASSWORD -->
 					<div class="d-flex flex-column position-relative px-3 mt-3">
 						<div class="d-flex justify-content-between">
 							<label class="align-self-start fw-bold" for="password-input"
 								>Mot de passe</label
 							>
+							<!-- Icons for display / hide password -->
 							<div>
 								<i
 									v-if="!hiddenPassword"

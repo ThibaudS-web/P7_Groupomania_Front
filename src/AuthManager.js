@@ -1,5 +1,4 @@
 export default {
-
     getUserId: function () {
         const userId = localStorage.getItem('userId')
         return userId

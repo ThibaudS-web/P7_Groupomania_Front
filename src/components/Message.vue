@@ -143,6 +143,9 @@ export default {
 				userId: AuthManager.getUserId(),
 				messageId: this.dataMessage.id
 			};
+			if(!comment.content) {
+				return alert("Remplissez le champ avant d'envoyer")
+			}
 			const headerAuth = AuthManager.getAuthToken();
 			const res = await fetch("http://localhost:3000/api/comments", {
 				method: "POST",

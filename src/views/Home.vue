@@ -1,5 +1,5 @@
 <template>
-	<h1 class="mb-4">Bienvenue au réseau social de Groupomania</h1>
+	<h1 class="mb-4">Bienvenue sur le réseau social de Groupomania</h1>
 	<Button
 		@click="toggleAddMessage"
 		:text="showAddMessage ? 'Fermer' : 'Nouveau message'"
@@ -84,6 +84,7 @@ export default {
 			});
 			if (res.status === 201) {
 				const result = await res.json();
+				//Add the new message to the beginning of the array 
 				this.messages.unshift(result);
 				this.toggleAddMessage();
 			} else {
