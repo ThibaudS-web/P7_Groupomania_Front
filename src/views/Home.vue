@@ -14,6 +14,7 @@ import Messages from "../components/Messages.vue";
 import AddMessage from "../components/AddMessage.vue";
 import Button from "../components/Button.vue";
 import AuthManager from "../AuthManager.js";
+import { apiClient } from "../services/ApiClient";
 
 export default {
 	name: "Home",
@@ -29,26 +30,28 @@ export default {
 			showAddMessage: false
 		};
 	},
-	beforeMount: function() {
-		const headerAuth = AuthManager.getAuthToken();
-		fetch("http://localhost:3000/api/messages", {
-			method: "GET",
-			headers: {
-				"Content-type": "application/json",
-				Authorization: headerAuth
-			}
-		})
-			.then(res => {
-				if (res.status == 200) {
-					return res.json();
-				} else {
-					throw "Messages cannot be found!";
-				}
-			})
-			.then(dataMessages => {
-				this.messages = dataMessages.messages;
-			})
-			.catch(err => console.log(err));
+	beforeMount: async function() {
+		const res = await apiClient.get("/api/messages");
+		this.messages = res.messages
+		// const headerAuth = AuthManager.getAuthToken();
+		// fetch("http://localhost:3000/api/messages", {
+		// 	method: "GET",
+		// 	headers: {
+		// 		"Content-type": "application/json",
+		// 		Authorization: headerAuth
+		// 	}
+		// })
+		// 	.then(res => {
+		// 		if (res.status == 200) {
+		// 			return res.json();
+		// 		} else {
+		// 			throw "Messages cannot be found!";
+		// 		}
+		// 	})
+		// 	.then(dataMessages => {
+		// 		this.messages = dataMessages.messages;
+		// 	})
+		// 	.catch(err => console.log(err));
 	},
 	methods: {
 		toggleAddMessage() {
@@ -84,7 +87,7 @@ export default {
 			});
 			if (res.status === 201) {
 				const result = await res.json();
-				//Add the new message to the beginning of the array 
+				//Add the new message to the beginning of the array
 				this.messages.unshift(result);
 				this.toggleAddMessage();
 			} else {
