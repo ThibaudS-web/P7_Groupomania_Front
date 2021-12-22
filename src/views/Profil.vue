@@ -5,7 +5,7 @@
 	<div class="container-md justify-content-around flex-wrap d-flex">
 		<!-- IMAGE USER -->
 		<div id="container-profil-photo" class="d-flex p-4 pb-3 flex-column">
-			<img  id="image-user" :src="profilData.picture" alt="image utilisateur" />
+			<img id="image-user" :src="profilData.picture" alt="image utilisateur" />
 			<!-- LOAD THE PICTURE IN THIS INPUT -->
 			<div class="input-group mb-3">
 				<input
@@ -38,7 +38,10 @@
 		</div>
 		<div class="d-flex col-lg-5 flex-column">
 			<!-- CONTAIN THE BIO PROFIL -->
-			<div v-if="profilData.bio" class="border text-start my-3 rounded p-3 border-2 border-dark">
+			<div
+				v-if="profilData.bio"
+				class="border text-start my-3 rounded p-3 border-2 border-dark"
+			>
 				{{ profilData.bio }}
 			</div>
 			<Button
@@ -76,6 +79,7 @@
 import picture from "../assets/user_picture_default.png";
 import Button from "../components/Button.vue";
 import AuthManager from "../AuthManager";
+import { apiClient } from "../services/ApiClient";
 
 export default {
 	name: "Profil",
@@ -91,10 +95,10 @@ export default {
 			targetFile: "",
 			displayBtn: "",
 			bio: "",
-			userIdLocal: AuthManager.getUserId(),
+			userIdLocal: AuthManager.getUserId()
 		};
 	},
-	emits: ['signin-success'],
+	emits: ["signin-success"],
 	methods: {
 		toggleAddBio() {
 			this.showAddBio = !this.showAddBio;
@@ -105,81 +109,45 @@ export default {
 		},
 
 		async modifyPicture() {
-			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();
 			formData.append("image", this.targetFile);
-			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/picture", {
-				method: "PUT",
-				headers: {
-					Authorization: headerAuth
-				},
-				body: formData
-			});
-			if (res.status === 201) {
-				const result = await res.json();
-				this.profilData.picture = result;
+			apiClient.modifyPictureProfil(formData).then(response => {
+				this.profilData.picture = response;
 				this.displayBtn = true;
-			} else {
-				alert("Image can't be modified");
-			}
+			});
 		},
 
 		async deletePicture() {
-			const headerAuth = AuthManager.getAuthToken();
-			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/picture", {
-				method: "DELETE",
-				headers: {
-					Authorization: headerAuth
-				},
-				body: picture
+			apiClient.deletePictureProfil().then(response => {
+				if (response.status === 200) {
+					this.profilData.picture = this.defaultPicture;
+					this.displayBtn = false;
+				} else {
+					alert("Image can't be deleted");
+				}
 			});
-			if (res.status === 200) {
-				this.profilData.picture = this.defaultPicture;
-				this.displayBtn = false;
-			} else {
-				alert("Image can't be deleted");
-			}
 		},
 
 		async modifyBio() {
-			const headerAuth = AuthManager.getAuthToken();
 			const newBio = this.bio;
-			const res = await fetch("http://localhost:3000/api/auth/profils/myProfil/bio", {
-				method: "PUT",
-				headers: {
-					Authorization: headerAuth,
-					"Content-type": "application/json"
-				},
-				body: JSON.stringify({ bio: newBio })
+			apiClient.modifyPictureBio({ bio: newBio }).then(response => {
+				if (response.status === 201) {
+					this.profilData.bio = newBio;
+					this.showAddBio = !this.showAddBio;
+				} else {
+					alert("Bio can't be modified!");
+				}
 			});
-			if (res.status === 201) {
-				this.profilData.bio = newBio;
-				this.showAddBio = !this.showAddBio;
-			} else {
-				alert("Bio can't be modified!");
-			}
 		}
 	},
 	beforeMount: function() {
-		const headerAuth = AuthManager.getAuthToken();
+
 		const url = document.location.href;
 		const getUserId = url.split("/profil/");
 		const userId = getUserId[1];
-		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
-			method: "GET",
-			headers: {
-				"Content-type": "application/json",
-				Authorization: headerAuth
-			}
-		})
-			.then(res => {
-				if (res.status === 200) {
-					return res.json();
-				} else {
-					throw "Profil Not Found";
-				}
-			})
-			.then(data => {
+
+		apiClient.getOneUser(userId)
+		.then(data => {
 				this.profilData = data.profil;
 				if (this.profilData.picture === null) {
 					this.profilData.picture = this.defaultPicture;
@@ -233,7 +201,7 @@ img {
 }
 
 @media (max-width: 768px) {
-	img{
+	img {
 		align-self: center;
 	}
 }
@@ -242,7 +210,7 @@ img {
 	.container-md {
 		padding: 0;
 	}
-	#container-profil-photo{
+	#container-profil-photo {
 		border-radius: 0;
 		padding-top: 0;
 		width: 100%;

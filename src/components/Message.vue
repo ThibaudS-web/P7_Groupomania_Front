@@ -23,7 +23,7 @@
 				<i
 					v-if="dataUserId == dataMessage.userId || admin"
 					@click="deleteMessage(dataMessage.id)"
-					class="fas  fa-times"	
+					class="fas  fa-times"
 					type="button"
 					aria-label="Supprimer le message"
 				></i>
@@ -113,6 +113,7 @@
 import AuthManager from "../AuthManager";
 import picture from "../assets/user_picture_default.png";
 import Comments from "./Comments.vue";
+import { apiClient } from "../services/ApiClient";
 export default {
 	name: "Message",
 	data() {
@@ -143,62 +144,36 @@ export default {
 				userId: AuthManager.getUserId(),
 				messageId: this.dataMessage.id
 			};
-			if(!comment.content) {
-				return alert("Remplissez le champ avant d'envoyer")
+			if (!comment.content) {
+				return alert("Remplissez le champ avant d'envoyer");
 			}
-			const headerAuth = AuthManager.getAuthToken();
-			const res = await fetch("http://localhost:3000/api/comments", {
-				method: "POST",
-				headers: {
-					"Content-type": "application/json",
-					Authorization: headerAuth
-				},
-				body: JSON.stringify(comment)
-			});
-			if (res.status === 201) {
-				const result = await res.json();
-				this.dataMessage.Comments.push(result);
+			apiClient.addComment(comment).then(response => {
+				const newComment = response;
+				this.dataMessage.Comments.push(newComment);
 				this.contentComment = "";
-			} else {
-				alert("Comment cannot be sent!");
-			}
+			});
 		},
 		async updateMessage(id) {
 			const contentMessage = document.getElementById("content-message-input");
-			const headerAuth = AuthManager.getAuthToken();
 			const newContent = contentMessage.value;
-			const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
-				method: "PUT",
-				headers: {
-					"Content-type": "application/json",
-					Authorization: headerAuth
-				},
-				body: JSON.stringify({ content: newContent })
-			});
-			if (res.status === 201) {
-				this.dataMessage.content = newContent;
-				this.toggleModifyContent();
-			} else {
-				alert("content can't be modified!");
-			}
-		},
-		async deleteComment(id) {
-			const headerAuth = AuthManager.getAuthToken();
-			const res = await fetch(`http://localhost:3000/api/comments/${id}`, {
-				method: "DELETE",
-				headers: {
-					"Content-type": "application/json",
-					Authorization: headerAuth
+			apiClient.modifyMessage(id, { content: newContent }).then(response => {
+				if (response.status === 201) {
+					this.dataMessage.content = newContent;
+					this.toggleModifyContent();
 				}
 			});
-			if (res.status === 200) {
-				let findCommentIndex = this.dataMessage.Comments.findIndex(
-					comment => comment.id == id
-				);
-				this.dataMessage.Comments.splice(findCommentIndex, 1);
-			} else {
-				alert("Error deleting");
-			}
+		},
+		async deleteComment(id) {
+			apiClient.deleteComment(id).then(response => {
+				if (response.status === 200) {
+					let findCommentIndex = this.dataMessage.Comments.findIndex(
+						comment => comment.id == id
+					);
+					this.dataMessage.Comments.splice(findCommentIndex, 1);
+				} else {
+					alert("Error deleting");
+				}
+			});
 		},
 		deleteMessage(id) {
 			this.$emit("delete-message", id);
@@ -216,24 +191,11 @@ export default {
 		}
 	},
 	beforeMount: function() {
-		const headerAuth = AuthManager.getAuthToken();
 		const userId = AuthManager.getUserId();
 		this.authorMessageUrl = `profil/${this.dataMessage.userId}`;
 		this.profilUrl = `profil/${userId}`;
-		fetch(`http://localhost:3000/api/auth/profils/${userId}`, {
-			method: "GET",
-			headers: {
-				"Content-type": "application/json",
-				Authorization: headerAuth
-			}
-		})
-			.then(res => {
-				if (res.status === 200) {
-					return res.json();
-				} else {
-					throw "Profil Not Found";
-				}
-			})
+		apiClient
+			.getCurrentProfil()
 			.then(data => {
 				if (data.profil.picture) {
 					this.ProfilPicture = data.profil.picture;

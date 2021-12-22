@@ -13,7 +13,6 @@
 import Messages from "../components/Messages.vue";
 import AddMessage from "../components/AddMessage.vue";
 import Button from "../components/Button.vue";
-import AuthManager from "../AuthManager.js";
 import { apiClient } from "../services/ApiClient";
 
 export default {
@@ -28,71 +27,33 @@ export default {
 		return {
 			messages: [],
 			showAddMessage: false
-		};
+		}
 	},
 	beforeMount: async function() {
-		const res = await apiClient.get("/api/messages");
-		this.messages = res.messages
-		// const headerAuth = AuthManager.getAuthToken();
-		// fetch("http://localhost:3000/api/messages", {
-		// 	method: "GET",
-		// 	headers: {
-		// 		"Content-type": "application/json",
-		// 		Authorization: headerAuth
-		// 	}
-		// })
-		// 	.then(res => {
-		// 		if (res.status == 200) {
-		// 			return res.json();
-		// 		} else {
-		// 			throw "Messages cannot be found!";
-		// 		}
-		// 	})
-		// 	.then(dataMessages => {
-		// 		this.messages = dataMessages.messages;
-		// 	})
-		// 	.catch(err => console.log(err));
+		const res = await apiClient.getAllMessages();
+		this.messages = res.messages;
 	},
 	methods: {
 		toggleAddMessage() {
 			this.showAddMessage = !this.showAddMessage;
 		},
 		async deleteMessage(id) {
-			const headerAuth = AuthManager.getAuthToken();
 			if (confirm("Are you sure ?")) {
-				const res = await fetch(`http://localhost:3000/api/messages/${id}`, {
-					method: "DELETE",
-					headers: {
-						"Content-type": "application/json",
-						Authorization: headerAuth
-					}
-				});
+				const res = await apiClient.deleteMessage(id);
 				res.status === 200
 					? (this.messages = this.messages.filter(message => message.id !== id))
 					: alert("Error deleting message!");
 			}
 		},
 		async addMessage(message) {
-			const headerAuth = AuthManager.getAuthToken();
 			const formData = new FormData();
 			formData.append("title", message.title);
 			formData.append("content", message.content);
 			formData.append("image", message.attachment);
-			const res = await fetch("http://localhost:3000/api/messages", {
-				method: "POST",
-				headers: {
-					Authorization: headerAuth
-				},
-				body: formData
-			});
-			if (res.status === 201) {
-				const result = await res.json();
-				//Add the new message to the beginning of the array
-				this.messages.unshift(result);
-				this.toggleAddMessage();
-			} else {
-				alert("Message cannot be sent!");
-			}
+
+			const res = await apiClient.addMessage(formData);
+			this.messages.unshift(res);
+			this.toggleAddMessage();
 		}
 	},
 	emits: ["signin-success"]

@@ -48,7 +48,8 @@
 
 <script>
 import AuthManager from "../AuthManager";
-import authManager from "../AuthManager";
+// import authManager from "../AuthManager";
+import { apiClient } from "../services/ApiClient";
 export default {
 	name: "Comment",
 	data() {
@@ -76,23 +77,15 @@ export default {
 		},
 		async updateComment(id) {
 			const contentComment = document.getElementById("content-comment-input");
-			const headerAuth = authManager.getAuthToken();
 			const newComment = contentComment.value;
-
-			const res = await fetch(`http://localhost:3000/api/comments/${id}`, {
-				method: "PUT",
-				headers: {
-					"Content-type": "application/json",
-					Authorization: headerAuth
-				},
-				body: JSON.stringify({ content: newComment })
-			});
-			if (res.status === 201) {
-				this.dataComment.content = newComment;
-				this.toggleUpdate();
-			} else {
-				alert("Content can't be modified!");
-			}
+			apiClient.modifyComment(id, { content: newComment }).then(response => {
+				if (response.status === 201) {
+					this.dataComment.content = newComment;
+					this.toggleUpdate();
+				} else {
+					alert("Content can't be modified!");
+				}
+			})
 		}
 	},
 	beforeMount: function() {

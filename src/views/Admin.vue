@@ -17,11 +17,7 @@
 					<td>{{ user.username }}</td>
 					<td>{{ user.email }}</td>
 					<td>
-						<i
-							@click="deleteUser(user.id)"
-							type="button"
-							class="fas fa-times"
-						></i>
+						<i @click="deleteUser(user.id)" type="button" class="fas fa-times"></i>
 					</td>
 				</tr>
 			</tbody>
@@ -30,7 +26,8 @@
 </template>
 
 <script>
-import AuthManager from "../AuthManager.js";
+// import AuthManager from "../AuthManager.js";
+import { apiClient } from "../services/ApiClient.js";
 export default {
 	name: "Admin",
 	data() {
@@ -40,43 +37,23 @@ export default {
 	},
 	emits: ["signin-success"],
 	beforeMount: function() {
-		const headerAuth = AuthManager.getAuthToken();
-		fetch("http://localhost:3000/api/auth/profils", {
-			method: "GET",
-			headers: {
-				"Content-type": "application/json",
-				Authorization: headerAuth
-			}
+		apiClient.getAllUsers()
+		.then(profils => {
+			this.users = profils
 		})
-			.then(res => {
-				if (res.status == 200) {
-					return res.json();
-				} else {
-					throw "Messages cannot be found!";
-				}
-			})
-			.then(profils => {
-				this.users = profils;
-			})
-			.catch(err => console.log(err));
+		.catch(err => console.log(err));
 	},
 	methods: {
 		async deleteUser(id) {
-			const headerAuth = AuthManager.getAuthToken();
 			if (confirm("Are you sure to delete this user?")) {
-				const res = await fetch(`http://localhost:3000/api/auth/profils/${id}`, {
-					method: "DELETE",
-					headers: {
-						"Content-type": "application/json",
-						Authorization: headerAuth
+				apiClient.deleteUser(id).then(response => {
+					if (response.status === 200) {
+						let findUserIndex = this.users.findIndex(user => user.id == id);
+						this.users.splice(findUserIndex, 1);
+					} else {
+						alert("Error deleting");
 					}
-				});
-				if (res.status === 200) {
-					let findUserIndex = this.users.findIndex(user => user.id == id);
-					this.users.splice(findUserIndex, 1);
-				} else {
-					alert("Error deleting");
-				}
+				})
 			}
 		}
 	}
