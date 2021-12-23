@@ -192,35 +192,6 @@ class ApiClient {
         })
     }
 
-    post(path, body) {
-        return fetch(this.baseUrl + path, {
-            method: 'POST',
-            body: body instanceof FormData ? body : JSON.stringify(body),
-            headers: this.headers(body instanceof FormData)
-        }).then(response => {
-            if (response.status === 201) {
-                console.log('ok', body)
-                return response.json()
-            } else {
-                alert('Une erreur est survenue !')
-            }
-        })
-    }
-
-    put(path, body) {
-        return fetch(this.baseUrl + path, {
-            method: 'PUT',
-            body: JSON.stringify(body),
-            headers: this.headers()
-        })
-    }
-
-    delete(path) {
-        return fetch(this.baseUrl + path, {
-            method: 'DELETE',
-            headers: this.headers()
-        })
-    }
     deleteMessage(id) {
         return fetch(this.baseUrl + this.routes.deleteMessage + `/${id}`, {
             method: 'DELETE',
