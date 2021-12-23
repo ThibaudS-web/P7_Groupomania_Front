@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { apiClient } from "../services/ApiClient";
+
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
 
@@ -185,13 +187,8 @@ export default {
 				this.isValidMail = true;
 				this.textError = "";
 
-				fetch("http://localhost:3000/api/auth/login", {
-					method: "POST",
-					headers: {
-						"Content-type": "application/json"
-					},
-					body: JSON.stringify(userLog)
-				})
+				apiClient
+					.signin(userLog)
 					.then(res => {
 						if (res.status === 200) {
 							return res.json();

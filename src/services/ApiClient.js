@@ -5,6 +5,8 @@ class ApiClient {
         const userId = AuthManager.getUserId()
         //TODO : ADD route here
         this.routes = {
+            signup: "/api/auth/signup",
+            signin: "/api/auth/login",
             messages: '/api/messages',
             deleteMessage: `/api/messages`,
             currentUser: `/api/auth/profils/${userId}`,
@@ -26,6 +28,23 @@ class ApiClient {
             ...contentType,
             Authorization: AuthManager.getAuthToken(),
         }
+    }
+
+    signup(body) {
+        return fetch(this.baseUrl + this.routes.signup, {
+            method: 'POST',
+            body: body,
+            headers: this.headers()
+        })
+    }
+
+    signin(body) {
+        return fetch(this.baseUrl + this.routes.signin, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: this.headers()
+        })
+
     }
 
     getAllUsers() {
@@ -68,7 +87,7 @@ class ApiClient {
             })
             .catch(() => alert("Impossible de récupérer les données de l'API"))
     }
-    
+
     deletePictureProfil() {
         return fetch(this.baseUrl + this.routes.currentUserPicture, {
             method: 'DELETE',

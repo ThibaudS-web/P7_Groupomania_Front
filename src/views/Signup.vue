@@ -116,6 +116,7 @@ schema
 	.spaces();
 
 const emailValidator = require("email-validator");
+import { apiClient } from "../services/ApiClient";
 import Utils from "../Utils";
 export default {
 	data() {
@@ -201,13 +202,8 @@ export default {
 				this.isValidMail = true;
 				this.textErrorEmail = "";
 
-				fetch("http://localhost:3000/api/auth/signup", {
-					method: "POST",
-					headers: {
-						"Content-type": "application/json"
-					},
-					body: JSON.stringify(newUser)
-				})
+				apiClient
+					.signup(newUser)
 					.then(res => {
 						if (res.status === 201) {
 							alert(
@@ -220,6 +216,7 @@ export default {
 						}
 					})
 					.catch(err => console.log(err.message));
+
 			} else {
 				//USERNAME VALIDATION
 				if (newUser.username === "" || newUser.username === undefined) {
